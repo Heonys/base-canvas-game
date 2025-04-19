@@ -1,0 +1,12 @@
+{
+    "name": "@base-canvas-rpg/common",
+    "private": true,
+    "version": "1.0.0",
+    "main": "./index.ts",
+    "type": "module",
+    "devDependencies": {
+      "typescript": "~5.7.2",
+      "vite": "^6.3.1"
+    }
+  }
+  
