@@ -5,7 +5,9 @@
   "description": "",
   "scripts": {
     "preinstall": "pnpm dlx only-allow pnpm",
-    "kit": "pnpm -F @base-canvas-rpg/rpg-kit dev"
+    "kit": "pnpm -F @base-canvas-rpg/rpg-kit dev",
+    "dev": "pnpm kit"
+    
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
