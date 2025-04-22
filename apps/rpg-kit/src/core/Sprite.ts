@@ -7,6 +7,7 @@ type SpriteOptions = {
   frameCols?: number;
   frameRows?: number;
   currentFrame?: number;
+  position?: Vector2;
   scale?: number;
 };
 
@@ -18,6 +19,7 @@ export class Sprite {
   private frameRows: number;
   private scale: number;
   currentFrame: number;
+  position: Vector2;
 
   constructor({
     resource,
@@ -25,6 +27,7 @@ export class Sprite {
     frameCols = 1,
     frameRows = 1,
     currentFrame = 0,
+    position = new Vector2(0, 0),
     scale = 1,
   }: SpriteOptions) {
     this.resource = resource;
@@ -32,6 +35,7 @@ export class Sprite {
     this.frameCols = frameCols;
     this.frameRows = frameRows;
     this.currentFrame = currentFrame;
+    this.position = position;
     this.scale = scale;
 
     this.buildFrameMap();
@@ -44,7 +48,7 @@ export class Sprite {
         this.frameMap.set(frameCount, {
           x: this.frameSize.x * x,
           y: this.frameSize.y * y,
-        });
+        } as Vector2);
         frameCount++;
       }
     }

@@ -1,6 +1,6 @@
-import { resources } from "@/core/Resources";
-import { Sprite } from "@/core/Sprite";
-import { Vector2 } from "@/core/Vector2";
+import { resources, Sprite, Vector2, GameLoop, KeyTracker, Direction } from "@/core";
+import { gridCells, moveTowards, isSpaceFree } from "@/utils";
+import { walls } from "@/object";
 
 import "./style.css";
 
@@ -23,6 +23,7 @@ const hero = new Sprite({
   frameCols: 3,
   frameRows: 8,
   currentFrame: 1,
+  position: new Vector2(gridCells(6), gridCells(5)),
 });
 
 const shadow = new Sprite({
@@ -30,17 +31,62 @@ const shadow = new Sprite({
   frameSize: new Vector2(32, 32),
 });
 
-const heroPos = new Vector2(16 * 6, 16 * 5);
+const keyTracker = new KeyTracker();
 const heroOffset = new Vector2(-8, -19);
+const destination = hero.position.duplicate();
+
+const update = () => {
+  const distance = moveTowards(hero, destination, 1);
+  const isArrived = distance <= 1;
+  if (isArrived) handleMove();
+};
+
+const handleMove = () => {
+  if (!keyTracker.direction) return;
+
+  let nextX = destination.x;
+  let nextY = destination.y;
+  const gridSize = 16;
+
+  switch (keyTracker.direction) {
+    case Direction.DOWN: {
+      nextY += gridSize;
+      hero.currentFrame = 0;
+      break;
+    }
+    case Direction.UP: {
+      nextY -= gridSize;
+      hero.currentFrame = 6;
+      break;
+    }
+    case Direction.LEFT: {
+      nextX -= gridSize;
+      hero.currentFrame = 9;
+      break;
+    }
+    case Direction.RIGHT: {
+      nextX += gridSize;
+      hero.currentFrame = 3;
+      break;
+    }
+  }
+
+  if (isSpaceFree(walls, nextX, nextY)) {
+    destination.x = nextX;
+    destination.y = nextY;
+  }
+};
 
 const draw = () => {
   skySprite.drawImage(ctx, 0, 0);
   groundSprite.drawImage(ctx, 0, 0);
 
-  hero.drawImage(ctx, heroPos.x + heroOffset.x, heroPos.y + heroOffset.y);
-  shadow.drawImage(ctx, heroPos.x + heroOffset.x, heroPos.y + heroOffset.y);
+  const x = hero.position.x + heroOffset.x;
+  const y = hero.position.y + heroOffset.y;
+
+  hero.drawImage(ctx, x, y);
+  shadow.drawImage(ctx, x, y);
 };
 
-setInterval(() => {
-  draw();
-}, 300);
+const gameLoop = new GameLoop(update, draw);
+gameLoop.start();
