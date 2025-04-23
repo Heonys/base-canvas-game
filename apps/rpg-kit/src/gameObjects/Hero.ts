@@ -1,0 +1,113 @@
+import {
+  Vector2,
+  GameObject,
+  Direction,
+  Sprite,
+  resources,
+  Animations,
+  FrameManager,
+} from "@/core";
+import { gridCells, isSpaceFree, moveTowards } from "@/utils";
+import {
+  WALK_DOWN,
+  WALK_UP,
+  WALK_LEFT,
+  WALK_RIGHT,
+  STAND_DOWN,
+  STAND_LEFT,
+  STAND_RIGHT,
+  STAND_UP,
+} from "@/animations/hero";
+import { walls } from "@/maps";
+import { MainScene } from "@/gameObjects";
+
+export class Hero extends GameObject {
+  facingDirection: Direction = Direction.DOWN;
+  destination: Vector2;
+  body: Sprite;
+
+  constructor(x: number, y: number) {
+    super(new Vector2(gridCells(x), gridCells(y)));
+
+    const shadow = new Sprite({
+      resource: resources.images.shadow,
+      frameSize: new Vector2(32, 32),
+      position: new Vector2(-8, -19),
+    });
+
+    this.body = new Sprite({
+      resource: resources.images.hero,
+      frameSize: new Vector2(32, 32),
+      frameCols: 3,
+      frameRows: 8,
+      currentFrame: 1,
+      position: new Vector2(-8, -20),
+      animations: new Animations({
+        walkDown: new FrameManager(WALK_DOWN),
+        walkUp: new FrameManager(WALK_UP),
+        walkLeft: new FrameManager(WALK_LEFT),
+        walkRight: new FrameManager(WALK_RIGHT),
+        standDown: new FrameManager(STAND_DOWN),
+        standUp: new FrameManager(STAND_UP),
+        standLeft: new FrameManager(STAND_LEFT),
+        standRight: new FrameManager(STAND_RIGHT),
+      }),
+    });
+
+    this.addChild(shadow);
+    this.addChild(this.body);
+    this.destination = this.position.duplicate();
+  }
+
+  override step(_: number, root: MainScene) {
+    const distance = moveTowards(this, this.destination, 1);
+    const isArrived = distance <= 1;
+    if (isArrived) this.handleMove(root);
+  }
+
+  handleMove(root: MainScene) {
+    const { keyTracker } = root;
+
+    if (!keyTracker.direction) {
+      if (this.facingDirection === Direction.DOWN) this.body.animations?.play("standDown");
+      if (this.facingDirection === Direction.UP) this.body.animations?.play("standUp");
+      if (this.facingDirection === Direction.LEFT) this.body.animations?.play("standLeft");
+      if (this.facingDirection === Direction.RIGHT) this.body.animations?.play("standRight");
+      return;
+    }
+
+    let nextX = this.destination.x;
+    let nextY = this.destination.y;
+    const gridSize = 16;
+
+    switch (keyTracker.direction) {
+      case Direction.DOWN: {
+        nextY += gridSize;
+        this.body.animations?.play("walkDown");
+        break;
+      }
+      case Direction.UP: {
+        nextY -= gridSize;
+        this.body.animations?.play("walkUp");
+        break;
+      }
+      case Direction.LEFT: {
+        nextX -= gridSize;
+        this.body.animations?.play("walkLeft");
+        break;
+      }
+      case Direction.RIGHT: {
+        nextX += gridSize;
+        this.body.animations?.play("walkRight");
+        break;
+      }
+    }
+
+    this.facingDirection = keyTracker.direction ?? this.facingDirection;
+
+    if (isSpaceFree(walls, nextX, nextY)) {
+      this.destination.x = nextX;
+      this.destination.y = nextY;
+    }
+  }
+}

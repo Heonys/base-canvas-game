@@ -1,6 +1,6 @@
-import type { Sprite, Vector2 } from "@/core";
+import type { GameObject, Vector2 } from "@/core";
 
-export function moveTowards(current: Sprite, destination: Vector2, speed: number) {
+export function moveTowards(current: GameObject, destination: Vector2, speed: number) {
   let dx = destination.x - current.position.x;
   let dy = destination.y - current.position.y;
   let distance = Math.sqrt(dx ** 2 + dy ** 2);

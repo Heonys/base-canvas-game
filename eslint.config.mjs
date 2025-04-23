@@ -16,6 +16,7 @@ export default tseslint.config(
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "prettier/prettier": "warn",
+      "@typescript-eslint/no-unused-vars": "off",
     },
   },
 );

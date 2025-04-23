@@ -1,4 +1,4 @@
-import { Vector2 } from "@/core/Vector2";
+import { GameObject, Vector2 } from "@/core";
 import type { ImageState, Animations } from "@/core";
 
 type SpriteOptions = {
@@ -12,7 +12,7 @@ type SpriteOptions = {
   animations?: Animations;
 };
 
-export class Sprite {
+export class Sprite extends GameObject {
   private frameMap = new Map<number, Vector2>();
   private resource: ImageState;
   private frameSize: Vector2;
@@ -33,6 +33,7 @@ export class Sprite {
     scale = 1,
     animations,
   }: SpriteOptions) {
+    super(new Vector2(0, 0));
     this.resource = resource;
     this.frameSize = frameSize;
     this.frameCols = frameCols;
@@ -58,14 +59,14 @@ export class Sprite {
     }
   }
 
-  step(delta: number) {
+  override step(delta: number) {
     if (!this.animations) return;
 
     this.animations.step(delta);
     this.currentFrame = this.animations.frame;
   }
 
-  drawImage(ctx: CanvasRenderingContext2D, x: number, y: number) {
+  override drawImage(ctx: CanvasRenderingContext2D, x: number, y: number) {
     if (!this.resource.isLoaded) return;
 
     let sourceX = 0;
