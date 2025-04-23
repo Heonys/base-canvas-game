@@ -1,8 +1,27 @@
-import { resources, Sprite, Vector2, GameLoop, KeyTracker, Direction } from "@/core";
+import {
+  resources,
+  Sprite,
+  Vector2,
+  GameLoop,
+  KeyTracker,
+  Direction,
+  Animations,
+  FrameManager,
+} from "@/core";
 import { gridCells, moveTowards, isSpaceFree } from "@/utils";
 import { walls } from "@/object";
 
 import "./style.css";
+import {
+  WALK_DOWN,
+  WALK_UP,
+  WALK_LEFT,
+  WALK_RIGHT,
+  STAND_DOWN,
+  STAND_LEFT,
+  STAND_RIGHT,
+  STAND_UP,
+} from "./animation/hero";
 
 const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
@@ -24,6 +43,16 @@ const hero = new Sprite({
   frameRows: 8,
   currentFrame: 1,
   position: new Vector2(gridCells(6), gridCells(5)),
+  animations: new Animations({
+    walkDown: new FrameManager(WALK_DOWN),
+    walkUp: new FrameManager(WALK_UP),
+    walkLeft: new FrameManager(WALK_LEFT),
+    walkRight: new FrameManager(WALK_RIGHT),
+    standDown: new FrameManager(STAND_DOWN),
+    standUp: new FrameManager(STAND_UP),
+    standLeft: new FrameManager(STAND_LEFT),
+    standRight: new FrameManager(STAND_RIGHT),
+  }),
 });
 
 const shadow = new Sprite({
@@ -34,15 +63,24 @@ const shadow = new Sprite({
 const keyTracker = new KeyTracker();
 const heroOffset = new Vector2(-8, -19);
 const destination = hero.position.duplicate();
+let heroFacing: Direction = Direction.DOWN;
 
-const update = () => {
+const update = (delta: number) => {
   const distance = moveTowards(hero, destination, 1);
   const isArrived = distance <= 1;
   if (isArrived) handleMove();
+
+  hero.step(delta);
 };
 
 const handleMove = () => {
-  if (!keyTracker.direction) return;
+  if (!keyTracker.direction) {
+    if (heroFacing === Direction.DOWN) hero.animations?.play("standDown");
+    if (heroFacing === Direction.UP) hero.animations?.play("standUp");
+    if (heroFacing === Direction.LEFT) hero.animations?.play("standLeft");
+    if (heroFacing === Direction.RIGHT) hero.animations?.play("standRight");
+    return;
+  }
 
   let nextX = destination.x;
   let nextY = destination.y;
@@ -51,25 +89,27 @@ const handleMove = () => {
   switch (keyTracker.direction) {
     case Direction.DOWN: {
       nextY += gridSize;
-      hero.currentFrame = 0;
+      hero.animations?.play("walkDown");
       break;
     }
     case Direction.UP: {
       nextY -= gridSize;
-      hero.currentFrame = 6;
+      hero.animations?.play("walkUp");
       break;
     }
     case Direction.LEFT: {
       nextX -= gridSize;
-      hero.currentFrame = 9;
+      hero.animations?.play("walkLeft");
       break;
     }
     case Direction.RIGHT: {
       nextX += gridSize;
-      hero.currentFrame = 3;
+      hero.animations?.play("walkRight");
       break;
     }
   }
+
+  heroFacing = keyTracker.direction ?? heroFacing;
 
   if (isSpaceFree(walls, nextX, nextY)) {
     destination.x = nextX;

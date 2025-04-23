@@ -1,5 +1,5 @@
 import { Vector2 } from "@/core/Vector2";
-import type { ImageState } from "@/core/Resources";
+import type { ImageState, Animations } from "@/core";
 
 type SpriteOptions = {
   resource: ImageState;
@@ -9,6 +9,7 @@ type SpriteOptions = {
   currentFrame?: number;
   position?: Vector2;
   scale?: number;
+  animations?: Animations;
 };
 
 export class Sprite {
@@ -20,6 +21,7 @@ export class Sprite {
   private scale: number;
   currentFrame: number;
   position: Vector2;
+  animations?: Animations;
 
   constructor({
     resource,
@@ -29,6 +31,7 @@ export class Sprite {
     currentFrame = 0,
     position = new Vector2(0, 0),
     scale = 1,
+    animations,
   }: SpriteOptions) {
     this.resource = resource;
     this.frameSize = frameSize;
@@ -37,6 +40,7 @@ export class Sprite {
     this.currentFrame = currentFrame;
     this.position = position;
     this.scale = scale;
+    this.animations = animations;
 
     this.buildFrameMap();
   }
@@ -52,6 +56,13 @@ export class Sprite {
         frameCount++;
       }
     }
+  }
+
+  step(delta: number) {
+    if (!this.animations) return;
+
+    this.animations.step(delta);
+    this.currentFrame = this.animations.frame;
   }
 
   drawImage(ctx: CanvasRenderingContext2D, x: number, y: number) {

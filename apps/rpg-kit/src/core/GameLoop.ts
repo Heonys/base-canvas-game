@@ -6,7 +6,7 @@ export class GameLoop {
   private timeStep = 1000 / 60;
 
   constructor(
-    private update: (timeSep: number) => any,
+    private update: (timestamp: number) => any,
     private render: () => void,
   ) {}
 
