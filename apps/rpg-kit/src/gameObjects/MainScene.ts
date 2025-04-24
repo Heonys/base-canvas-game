@@ -1,5 +1,6 @@
 import { GameObject, KeyTracker, resources, Sprite, Vector2 } from "@/core";
 import { Hero } from "@/gameObjects";
+import { gridCells } from "@/utils";
 
 export class MainScene extends GameObject {
   keyTracker: KeyTracker;
@@ -22,6 +23,6 @@ export class MainScene extends GameObject {
         frameSize: new Vector2(this.canvasWidth, this.canvasHeight),
       }),
     );
-    this.addChild(new Hero(6, 5));
+    this.addChild(new Hero(gridCells(6), gridCells(5)));
   }
 }

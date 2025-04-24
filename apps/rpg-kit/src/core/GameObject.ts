@@ -10,6 +10,7 @@ export class GameObject {
   }
 
   stepEntry(delta: number, root: any) {
+    // 상향식 업데이트
     this.children.forEach((child) => child.stepEntry(delta, root));
     this.step(delta, root);
   }
@@ -17,12 +18,12 @@ export class GameObject {
   // @override
   step(_delta: number, _root: any) {}
 
-  draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
+  drawEntry(ctx: CanvasRenderingContext2D, x: number, y: number) {
     const drawPosX = x + this.position.x;
     const drawPosY = y + this.position.y;
 
     this.drawImage(ctx, drawPosX, drawPosY);
-    this.children.forEach((child) => child.draw(ctx, drawPosX, drawPosY));
+    this.children.forEach((child) => child.drawEntry(ctx, drawPosX, drawPosY));
   }
 
   // @override

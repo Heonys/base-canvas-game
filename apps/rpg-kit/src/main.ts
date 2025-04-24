@@ -13,7 +13,7 @@ const update = (delta: number) => {
 };
 
 const render = () => {
-  mainScene.draw(ctx, 0, 0);
+  mainScene.drawEntry(ctx, 0, 0);
 };
 
 const gameLoop = new GameLoop(update, render);

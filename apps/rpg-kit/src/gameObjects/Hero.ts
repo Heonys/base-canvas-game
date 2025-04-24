@@ -7,7 +7,7 @@ import {
   Animations,
   FrameManager,
 } from "@/core";
-import { gridCells, isSpaceFree, moveTowards } from "@/utils";
+import { isSpaceFree, moveTowards } from "@/utils";
 import {
   WALK_DOWN,
   WALK_UP,
@@ -27,13 +27,15 @@ export class Hero extends GameObject {
   body: Sprite;
 
   constructor(x: number, y: number) {
-    super(new Vector2(gridCells(x), gridCells(y)));
+    super(new Vector2(x, y));
 
-    const shadow = new Sprite({
-      resource: resources.images.shadow,
-      frameSize: new Vector2(32, 32),
-      position: new Vector2(-8, -19),
-    });
+    this.addChild(
+      new Sprite({
+        resource: resources.images.shadow,
+        frameSize: new Vector2(32, 32),
+        position: new Vector2(-8, -19),
+      }),
+    );
 
     this.body = new Sprite({
       resource: resources.images.hero,
@@ -54,7 +56,6 @@ export class Hero extends GameObject {
       }),
     });
 
-    this.addChild(shadow);
     this.addChild(this.body);
     this.destination = this.position.duplicate();
   }
