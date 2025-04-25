@@ -20,8 +20,7 @@ import {
   STAND_UP,
   PICK_UP_DOWN,
 } from "@/animations/hero";
-import { walls } from "@/maps";
-import { MainScene } from "@/gameObjects";
+import { Main } from "@/gameObjects";
 
 export class Hero extends GameObject {
   facingDirection: Direction = Direction.DOWN;
@@ -81,7 +80,7 @@ export class Hero extends GameObject {
     });
   }
 
-  override step(delta: number, root: MainScene) {
+  override step(delta: number, root: Main) {
     if (this.itemPickupTime > 0) {
       this.whileItemPickup(delta);
       return;
@@ -110,7 +109,7 @@ export class Hero extends GameObject {
     eventEmitter.emit("HERO_POSITION", this.position);
   }
 
-  handleMove(root: MainScene) {
+  handleMove(root: Main) {
     const { keyTracker } = root;
 
     if (!keyTracker.direction) {
@@ -150,7 +149,7 @@ export class Hero extends GameObject {
 
     this.facingDirection = keyTracker.direction ?? this.facingDirection;
 
-    if (isSpaceFree(walls, nextX, nextY)) {
+    if (isSpaceFree(root.level.walls, nextX, nextY)) {
       this.destination.x = nextX;
       this.destination.y = nextY;
     }

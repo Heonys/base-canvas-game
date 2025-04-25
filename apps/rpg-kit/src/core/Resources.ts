@@ -1,9 +1,14 @@
 const toLoad = {
-  sky: "/sprites/sky.png",
-  ground: "/sprites/ground.png",
   hero: "/sprites/hero-sheet.png",
   shadow: "/sprites/shadow.png",
   rod: "/sprites/rod.png",
+  exit: "/sprites/exit.png",
+
+  sky: "/sprites/sky.png",
+  ground: "/sprites/ground.png",
+
+  cave: "/sprites/cave.png",
+  caveGround: "/sprites/cave-ground.png",
 };
 type ResourceKey = keyof typeof toLoad;
 

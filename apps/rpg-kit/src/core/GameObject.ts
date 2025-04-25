@@ -1,6 +1,9 @@
 import { eventEmitter, Vector2 } from "@/core";
 
 export class GameObject {
+  canvasWidth = 320;
+  canvasHeight = 180;
+
   children: GameObject[] = [];
   position: Vector2;
   parent: GameObject | null = null;
