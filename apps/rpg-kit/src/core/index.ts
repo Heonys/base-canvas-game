@@ -6,3 +6,5 @@ export * from "./Vector2";
 export * from "./KeyTracker";
 export * from "./Animations";
 export * from "./FrameManager";
+export * from "./EventEmitter";
+export * from "./Camera";

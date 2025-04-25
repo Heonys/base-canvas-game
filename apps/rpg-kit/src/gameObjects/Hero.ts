@@ -6,6 +6,7 @@ import {
   resources,
   Animations,
   FrameManager,
+  eventEmitter,
 } from "@/core";
 import { isSpaceFree, moveTowards } from "@/utils";
 import {
@@ -17,14 +18,19 @@ import {
   STAND_LEFT,
   STAND_RIGHT,
   STAND_UP,
+  PICK_UP_DOWN,
 } from "@/animations/hero";
 import { walls } from "@/maps";
 import { MainScene } from "@/gameObjects";
 
 export class Hero extends GameObject {
   facingDirection: Direction = Direction.DOWN;
+  itemPickupTime = 0;
+  pickupEffect: GameObject | null = null;
   destination: Vector2;
   body: Sprite;
+  lastX?: number;
+  lastY?: number;
 
   constructor(x: number, y: number) {
     super(new Vector2(x, y));
@@ -53,17 +59,55 @@ export class Hero extends GameObject {
         standUp: new FrameManager(STAND_UP),
         standLeft: new FrameManager(STAND_LEFT),
         standRight: new FrameManager(STAND_RIGHT),
+        pickUpDown: new FrameManager(PICK_UP_DOWN),
       }),
     });
 
     this.addChild(this.body);
     this.destination = this.position.duplicate();
+
+    eventEmitter.on("HERO_PICKS_UP_ITEM", this, ({ image, position }) => {
+      this.destination = position.duplicate();
+      this.itemPickupTime = 1000;
+
+      this.pickupEffect = new GameObject();
+      this.pickupEffect.addChild(
+        new Sprite({
+          resource: image,
+          position: new Vector2(0, -18),
+        }),
+      );
+      this.addChild(this.pickupEffect);
+    });
   }
 
-  override step(_: number, root: MainScene) {
+  override step(delta: number, root: MainScene) {
+    if (this.itemPickupTime > 0) {
+      this.whileItemPickup(delta);
+      return;
+    }
+
     const distance = moveTowards(this, this.destination, 1);
     const isArrived = distance <= 1;
     if (isArrived) this.handleMove(root);
+
+    this.positionEmit();
+  }
+
+  whileItemPickup(delta: number) {
+    this.itemPickupTime -= delta;
+    this.body.animations?.play("pickUpDown");
+
+    if (this.itemPickupTime <= 0) {
+      this.pickupEffect?.destroy();
+    }
+  }
+
+  positionEmit() {
+    if (this.lastX === this.position.x && this.lastY === this.position.y) return;
+    this.lastX = this.position.x;
+    this.lastY = this.position.y;
+    eventEmitter.emit("HERO_POSITION", this.position);
   }
 
   handleMove(root: MainScene) {
