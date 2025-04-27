@@ -10,6 +10,7 @@ type SpriteOptions = {
   position?: Vector2;
   scale?: number;
   animations?: Animations;
+  zIndex?: number;
 };
 
 export class Sprite extends GameObject {
@@ -31,6 +32,7 @@ export class Sprite extends GameObject {
     currentFrame = 0,
     position = new Vector2(0, 0),
     scale = 1,
+    zIndex = 0,
     animations,
   }: SpriteOptions) {
     super(new Vector2(0, 0));
@@ -41,6 +43,7 @@ export class Sprite extends GameObject {
     this.currentFrame = currentFrame;
     this.position = position;
     this.scale = scale;
+    this.zIndex = zIndex;
     this.animations = animations;
 
     this.buildFrameMap();

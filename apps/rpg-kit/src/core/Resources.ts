@@ -9,6 +9,11 @@ const toLoad = {
 
   cave: "/sprites/cave.png",
   caveGround: "/sprites/cave-ground.png",
+
+  knight: "/sprites/knight-sheet-1.png",
+
+  textBox: "/sprites/text-box.png",
+  fontWhite: "/sprites/sprite-font-white.png",
 };
 type ResourceKey = keyof typeof toLoad;
 

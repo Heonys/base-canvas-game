@@ -149,7 +149,13 @@ export class Hero extends GameObject {
 
     this.facingDirection = keyTracker.direction ?? this.facingDirection;
 
-    if (isSpaceFree(root.level.walls, nextX, nextY)) {
+    const isFree = isSpaceFree(root.level.walls, nextX, nextY);
+
+    const isSolidSpace = root.level.children.find((it) => {
+      return it.isSolid && it.position.x === nextX && it.position.y === nextY;
+    });
+
+    if (isFree && !isSolidSpace) {
       this.destination.x = nextX;
       this.destination.y = nextY;
     }

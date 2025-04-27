@@ -3,6 +3,7 @@ import { eventEmitter, GameObject, resources, Sprite, Vector2 } from "@/core";
 export class Exit extends GameObject {
   constructor(x: number, y: number) {
     super(new Vector2(x, y));
+    this.zIndex = -10;
 
     this.addChild(
       new Sprite({

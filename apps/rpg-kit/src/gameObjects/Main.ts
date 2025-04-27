@@ -1,12 +1,12 @@
 import { Camera, eventEmitter, GameObject, KeyTracker, Level } from "@/core";
-import { Inventory } from "@/gameObjects";
-import { Cave } from "@/level";
+import { Inventory, SpriteText } from "@/gameObjects";
 
 export class Main extends GameObject {
   keyTracker: KeyTracker;
   camera: Camera;
   inven: GameObject;
   level: Level;
+  textBox: SpriteText;
 
   constructor() {
     super();
@@ -15,6 +15,8 @@ export class Main extends GameObject {
     this.camera = new Camera();
     this.inven = new Inventory();
     this.level = new Level();
+    this.textBox = new SpriteText("Hello Canvas Hello Canvas Hello Canvas");
+
     this.addChild(this.camera);
   }
 
@@ -36,5 +38,6 @@ export class Main extends GameObject {
 
   drawForeground(ctx: CanvasRenderingContext2D) {
     this.inven.drawEntry(ctx, this.inven.position.x, this.inven.position.y);
+    this.textBox.drawEntry(ctx, 0, 0);
   }
 }

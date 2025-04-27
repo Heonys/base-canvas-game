@@ -1,5 +1,5 @@
 import { eventEmitter, Level, resources, Sprite, Vector2 } from "@/core";
-import { Hero, Exit, Rod } from "@/gameObjects";
+import { Hero, Exit, Rod, Knight } from "@/gameObjects";
 import { gridCells } from "@/utils";
 import { Outdoor } from "@/level";
 
@@ -18,9 +18,11 @@ export class Cave extends Level {
       new Sprite({
         resource: resources.images.caveGround,
         frameSize: new Vector2(this.canvasWidth, this.canvasHeight),
+        zIndex: -999,
       }),
     );
     this.addChild(new Exit(gridCells(3), gridCells(5)));
+    this.addChild(new Knight(gridCells(10), gridCells(5)));
 
     this.startPosition = startPosition ?? DEFAULT_START_POSITION;
     this.addChild(new Hero(this.startPosition.x, this.startPosition.y));

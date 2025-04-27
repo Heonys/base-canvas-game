@@ -17,6 +17,7 @@ export class Outdoor extends Level {
       new Sprite({
         resource: resources.images.ground,
         frameSize: new Vector2(this.canvasWidth, this.canvasHeight),
+        zIndex: -999,
       }),
     );
     this.addChild(new Exit(gridCells(6), gridCells(3)));

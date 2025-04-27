@@ -8,6 +8,8 @@ export class GameObject {
   position: Vector2;
   parent: GameObject | null = null;
   hasReadyBeenCalled = false;
+  isSolid = false;
+  zIndex = 0;
 
   constructor(position: Vector2 = new Vector2(0, 0)) {
     this.position = position;
@@ -36,7 +38,19 @@ export class GameObject {
 
     // 하향식 업데이트
     this.drawImage(ctx, drawPosX, drawPosY);
-    this.children.forEach((child) => child.drawEntry(ctx, drawPosX, drawPosY));
+    this.getDrawChidrenOrdered().forEach((child) => child.drawEntry(ctx, drawPosX, drawPosY));
+  }
+
+  getDrawChidrenOrdered() {
+    const bottoms = this.children
+      .filter((child) => child.zIndex < 0)
+      .sort((a, b) => a.zIndex - b.zIndex);
+
+    const rest = this.children
+      .filter((child) => child.zIndex === 0)
+      .sort((a, b) => a.position.y - b.position.y);
+
+    return [...bottoms, ...rest];
   }
 
   // @override
