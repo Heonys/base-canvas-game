@@ -6,6 +6,7 @@ export class Inventory extends GameObject {
 
   constructor() {
     super(new Vector2(0, 1));
+    this.drawLayer = "HUD";
     this.updateInventory();
 
     eventEmitter.on("HERO_PICKS_UP_ITEM", this, ({ image }) => {

@@ -22,7 +22,7 @@ export class Cave extends Level {
       }),
     );
     this.addChild(new Exit(gridCells(3), gridCells(5)));
-    this.addChild(new Knight(gridCells(10), gridCells(5)));
+    this.addChild(new Knight(gridCells(10), gridCells(5), "You found me!"));
 
     this.startPosition = startPosition ?? DEFAULT_START_POSITION;
     this.addChild(new Hero(this.startPosition.x, this.startPosition.y));

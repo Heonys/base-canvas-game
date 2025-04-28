@@ -6,10 +6,15 @@ export enum Direction {
 }
 
 export class KeyTracker {
+  keyMap = new Map<string, boolean>();
+  lastKeyMap = new Map<string, boolean>();
+
   private heldDirections: Direction[] = [];
 
   constructor() {
     document.addEventListener("keydown", (e) => {
+      this.keyMap.set(e.code, true);
+
       if (e.code === "ArrowUp" || e.code === "KeyW") {
         this.onPress(Direction.UP);
       }
@@ -25,6 +30,8 @@ export class KeyTracker {
     });
 
     document.addEventListener("keyup", (e) => {
+      this.keyMap.set(e.code, false);
+
       if (e.code === "ArrowUp" || e.code === "KeyW") {
         this.onRelease(Direction.UP);
       }
@@ -42,6 +49,15 @@ export class KeyTracker {
 
   get direction() {
     return this.heldDirections[0];
+  }
+
+  update() {
+    this.lastKeyMap = new Map(this.keyMap);
+  }
+
+  getActionJustPressed(keyCode: string) {
+    if (this.keyMap.get(keyCode) && !this.lastKeyMap.get(keyCode)) return true;
+    return false;
   }
 
   private onPress(dir: Direction) {

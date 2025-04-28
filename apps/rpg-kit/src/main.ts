@@ -12,6 +12,7 @@ mainScene.setLevel(new Cave());
 
 const update = (delta: number) => {
   mainScene.stepEntry(delta, mainScene);
+  mainScene.keyTracker.update();
 };
 
 const render = () => {
@@ -20,7 +21,7 @@ const render = () => {
 
   ctx.save();
   ctx.translate(mainScene.camera.position.x, mainScene.camera.position.y);
-  mainScene.drawEntry(ctx, 0, 0);
+  mainScene.drawObjects(ctx);
   ctx.restore();
 
   mainScene.drawForeground(ctx);

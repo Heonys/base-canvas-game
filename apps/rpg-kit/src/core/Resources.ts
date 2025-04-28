@@ -14,6 +14,7 @@ const toLoad = {
 
   textBox: "/sprites/text-box.png",
   fontWhite: "/sprites/sprite-font-white.png",
+  portraits: "/sprites/portraits-sheet.png",
 };
 type ResourceKey = keyof typeof toLoad;
 

@@ -12,6 +12,9 @@ type EventPayloadMap = {
   HERO_PICKS_UP_ITEM: { image: ImageState; position: Vector2 };
   HERO_EXIT: void;
   CHANGE_LEVEL: Level;
+  HERO_REQUEST_ACTION: GameObject;
+  START_TEXT_BOX: void;
+  END_TEXT_BOX: void;
 };
 
 class EventEmitter<EventTypes> {

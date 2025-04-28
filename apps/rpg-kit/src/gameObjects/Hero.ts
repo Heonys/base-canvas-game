@@ -30,6 +30,7 @@ export class Hero extends GameObject {
   body: Sprite;
   lastX?: number;
   lastY?: number;
+  isLocked = false;
 
   constructor(x: number, y: number) {
     super(new Vector2(x, y));
@@ -80,10 +81,31 @@ export class Hero extends GameObject {
     });
   }
 
+  override ready() {
+    eventEmitter.on("START_TEXT_BOX", this, () => {
+      this.isLocked = true;
+    });
+    eventEmitter.on("END_TEXT_BOX", this, () => {
+      this.isLocked = false;
+    });
+  }
+
   override step(delta: number, root: Main) {
+    if (this.isLocked) return;
+
     if (this.itemPickupTime > 0) {
       this.whileItemPickup(delta);
       return;
+    }
+
+    if (root.keyTracker.getActionJustPressed("Space")) {
+      const neighborObject = this.parent?.children.find((child) => {
+        return child.position.matches(this.position.toNeighbor(this.facingDirection));
+      });
+
+      if (neighborObject) {
+        eventEmitter.emit("HERO_REQUEST_ACTION", neighborObject);
+      }
     }
 
     const distance = moveTowards(this, this.destination, 1);
