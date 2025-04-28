@@ -1,4 +1,4 @@
-import { Camera, eventEmitter, GameObject, KeyTracker, Level } from "@/core";
+import { Camera, eventEmitter, GameObject, KeyTracker, Level, storyFlags } from "@/core";
 import { Inventory, SpriteText } from "@/gameObjects";
 
 export class Main extends GameObject {
@@ -17,7 +17,12 @@ export class Main extends GameObject {
 
     eventEmitter.on("HERO_REQUEST_ACTION", this, (neighborObject) => {
       if (neighborObject.getContents) {
-        const { text, portraitFrame } = neighborObject.getContents();
+        const contents = neighborObject.getContents();
+        if (!contents) return;
+
+        const { text, portraitFrame, addFlag } = contents;
+        if (addFlag) storyFlags.addFlags(addFlag);
+
         const textbox = new SpriteText(text, portraitFrame);
         this.addChild(textbox);
 

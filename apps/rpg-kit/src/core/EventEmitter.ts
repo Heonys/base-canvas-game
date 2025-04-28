@@ -1,4 +1,5 @@
 import type { GameObject, ImageState, Level, Vector2 } from "@/core";
+import { Npc } from "@/gameObjects";
 
 type EventListener<T> = {
   id: number;
@@ -12,7 +13,7 @@ type EventPayloadMap = {
   HERO_PICKS_UP_ITEM: { image: ImageState; position: Vector2 };
   HERO_EXIT: void;
   CHANGE_LEVEL: Level;
-  HERO_REQUEST_ACTION: GameObject;
+  HERO_REQUEST_ACTION: Npc;
   START_TEXT_BOX: void;
   END_TEXT_BOX: void;
 };

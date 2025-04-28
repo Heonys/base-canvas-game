@@ -9,3 +9,4 @@ export * from "./FrameManager";
 export * from "./EventEmitter";
 export * from "./Camera";
 export * from "./Level";
+export * from "./StoryFalgs";

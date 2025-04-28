@@ -1,13 +1,9 @@
-import { GameObject, Sprite, Vector2, resources } from "@/core";
+import { Sprite, Vector2, resources } from "@/core";
+import { Npc, NpcConfig } from "@/gameObjects";
 
-export class Knight extends GameObject {
-  textContent: string;
-
-  constructor(x: number, y: number, textContent: string) {
-    super(new Vector2(x, y));
-
-    this.isSolid = true;
-    this.textContent = textContent;
+export class Knight extends Npc {
+  constructor(config: NpcConfig) {
+    super(config);
 
     this.addChild(
       new Sprite({
@@ -26,11 +22,4 @@ export class Knight extends GameObject {
       }),
     );
   }
-
-  getContents = () => {
-    return {
-      portraitFrame: 1,
-      text: this.textContent,
-    };
-  };
 }

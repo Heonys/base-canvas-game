@@ -1,4 +1,4 @@
-import { eventEmitter, Level, resources, Sprite, Vector2 } from "@/core";
+import { eventEmitter, Level, resources, Sprite, Vector2, Flag } from "@/core";
 import { Hero, Exit, Rod, Knight } from "@/gameObjects";
 import { gridCells } from "@/utils";
 import { Outdoor } from "@/level";
@@ -22,7 +22,40 @@ export class Cave extends Level {
       }),
     );
     this.addChild(new Exit(gridCells(3), gridCells(5)));
-    this.addChild(new Knight(gridCells(10), gridCells(5), "You found me!"));
+    this.addChild(
+      new Knight({
+        position: new Vector2(gridCells(9), gridCells(5)),
+        portraitFrame: 0,
+        scenarios: [
+          {
+            text: "I just can't stand that guy.",
+            requires: [Flag.TALKED_TO_B],
+            bypass: [Flag.TALKED_TO_A],
+            addFlag: [Flag.TALKED_TO_A],
+          },
+          {
+            text: "He is just the worst!",
+            requires: [Flag.TALKED_TO_A],
+          },
+          {
+            text: "Grumble grumble. Another day at work.",
+          },
+        ],
+      }),
+    );
+
+    this.addChild(
+      new Knight({
+        position: new Vector2(gridCells(12), gridCells(5)),
+        portraitFrame: 1,
+        scenarios: [
+          {
+            text: "What a wonderful day at work in the cave!",
+            addFlag: [Flag.TALKED_TO_B],
+          },
+        ],
+      }),
+    );
 
     this.startPosition = startPosition ?? DEFAULT_START_POSITION;
     this.addChild(new Hero(this.startPosition.x, this.startPosition.y));

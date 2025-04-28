@@ -12,8 +12,6 @@ export class GameObject {
   zIndex = 0;
   drawLayer: null | string = null;
 
-  getContents?: () => { portraitFrame: number; text: string };
-
   constructor(position: Vector2 = new Vector2(0, 0)) {
     this.position = position;
   }
