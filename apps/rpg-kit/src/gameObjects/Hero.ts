@@ -20,7 +20,7 @@ import {
   STAND_UP,
   PICK_UP_DOWN,
 } from "@/animations/hero";
-import { Main } from "@/gameObjects";
+import { Main, Npc } from "@/gameObjects";
 
 export class Hero extends GameObject {
   facingDirection: Direction = Direction.DOWN;
@@ -104,13 +104,13 @@ export class Hero extends GameObject {
       });
 
       if (neighborObject) {
-        eventEmitter.emit("HERO_REQUEST_ACTION", neighborObject);
+        eventEmitter.emit("HERO_REQUEST_ACTION", neighborObject as Npc);
       }
     }
 
     const distance = moveTowards(this, this.destination, 1);
     const isArrived = distance <= 1;
-    if (isArrived) this.handleMove(root);
+    if (isArrived) this.tryMove(root);
 
     this.positionEmit();
   }
@@ -131,7 +131,7 @@ export class Hero extends GameObject {
     eventEmitter.emit("HERO_POSITION", this.position);
   }
 
-  handleMove(root: Main) {
+  tryMove(root: Main) {
     const { keyTracker } = root;
 
     if (!keyTracker.direction) {
