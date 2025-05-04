@@ -6,7 +6,8 @@
   "scripts": {
     "preinstall": "pnpm dlx only-allow pnpm",
     "kit": "pnpm -F @base-canvas-rpg/rpg-kit dev",
-    "dev": "pnpm kit"
+    "pizza": "pnpm -F @base-canvas-rpg/pizza-legends dev",
+    "dev": "pnpm pizza"
     
   },
   "devDependencies": {
