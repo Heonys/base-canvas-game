@@ -7,8 +7,7 @@
     "preinstall": "pnpm dlx only-allow pnpm",
     "kit": "pnpm -F @base-canvas-rpg/rpg-kit dev",
     "pizza": "pnpm -F @base-canvas-rpg/pizza-legends dev",
-    "multi-demo": "pnpm -F @base-canvas-rpg/multiplayer-demo dev",
-    "dev": "pnpm multi-demo"
+    "dev": "pnpm pizza"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
