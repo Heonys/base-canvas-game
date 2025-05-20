@@ -1,13 +1,11 @@
-import { resources, Sprite, Vector2d } from "@/core";
+import { GameObject, Config, resources, Sprite, Vector2d } from "@/core";
 
-export class Overworld {
-  constructor() {
-    this.init();
+export class Overworld extends GameObject {
+  constructor(config: Config) {
+    super(config);
   }
 
-  init() {}
-
-  draw(ctx: CanvasRenderingContext2D) {
+  ready() {
     const map = new Sprite({
       src: resources.images.map,
       frameSize: new Vector2d(352, 198),
@@ -26,10 +24,14 @@ export class Overworld {
       offset: new Vector2d(-8, -18),
     });
 
-    setTimeout(() => {
-      map.draw(ctx);
-      shadow.draw(ctx);
-      hero.draw(ctx);
-    }, 1000);
+    this.addChild(map);
+    this.addChild(hero);
+    this.addChild(shadow);
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    this.children.forEach((child) => {
+      child.draw(ctx, 0, 0);
+    });
   }
 }

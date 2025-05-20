@@ -41,4 +41,13 @@ export class GameObject {
   }
 
   draw(_ctx: CanvasRenderingContext2D, _x: number, _y: number) {}
+
+  addChild(gameObject: GameObject) {
+    gameObject.parent = this;
+    this.children.push(gameObject);
+  }
+
+  removeChild() {}
+
+  destroy() {}
 }
