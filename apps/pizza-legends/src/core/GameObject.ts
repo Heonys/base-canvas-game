@@ -1,4 +1,6 @@
 import { Vector2d } from "@/core";
+import { Layer } from "@/constants";
+import type { Overworld } from "@/gameObject";
 
 export class GameObject {
   canvasWidth = 352;
@@ -9,6 +11,8 @@ export class GameObject {
   parent: GameObject | null = null;
   hasReadyBeenCalled = false;
   isSolid = false;
+  layer: Layer = Layer.Main;
+  tileSize = 16;
 
   constructor(position?: Vector2d) {
     this.position = position ?? new Vector2d(0, 0);
@@ -16,7 +20,7 @@ export class GameObject {
 
   ready() {}
 
-  stepEntry(delta: number, root: GameObject) {
+  stepEntry(delta: number, root: Overworld) {
     this.children.forEach((child) => child.stepEntry(delta, root));
 
     if (!this.hasReadyBeenCalled) {
@@ -26,7 +30,7 @@ export class GameObject {
     this.step(delta, root);
   }
 
-  step(_delta: number, _root: GameObject) {}
+  step(_delta: number, _root: Overworld) {}
 
   drawEntry(ctx: CanvasRenderingContext2D, x: number, y: number) {
     const drawPosX = x + this.position.x;
@@ -43,7 +47,12 @@ export class GameObject {
     this.children.push(gameObject);
   }
 
-  removeChild() {}
+  removeChild(gameObject: GameObject) {
+    this.children = this.children.filter((child) => child !== gameObject);
+  }
 
-  destroy() {}
+  destroy() {
+    this.children.forEach((child) => child.destroy());
+    this.parent?.removeChild(this);
+  }
 }

@@ -1,4 +1,5 @@
-import { Overworld, GameLoop } from "@/core";
+import { GameLoop } from "@/core";
+import { Overworld } from "@/gameObject";
 
 import "./style.css";
 
@@ -9,11 +10,16 @@ const overworld = new Overworld();
 
 const update = (delta: number) => {
   overworld.stepEntry(delta, overworld);
+  overworld.keyTracker.update();
 };
 
 const render = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  overworld.drawEntry(ctx, 0, 0);
+  overworld.drawBackground(ctx);
+
+  overworld.drawObject(ctx);
+
+  overworld.drawForeground(ctx);
 };
 
 const gameLoop = new GameLoop(update, render);
