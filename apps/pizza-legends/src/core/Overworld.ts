@@ -1,10 +1,6 @@
-import { GameObject, Config, resources, Sprite, Vector2d } from "@/core";
+import { GameObject, resources, Sprite, Vector2d } from "@/core";
 
 export class Overworld extends GameObject {
-  constructor(config: Config) {
-    super(config);
-  }
-
   ready() {
     const map = new Sprite({
       src: resources.images.map,

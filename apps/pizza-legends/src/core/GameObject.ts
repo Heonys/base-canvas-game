@@ -1,9 +1,5 @@
 import { Vector2d } from "@/core";
 
-export type Config = {
-  position?: Vector2d;
-};
-
 export class GameObject {
   canvasWidth = 352;
   canvasHeight = 198;
@@ -14,8 +10,8 @@ export class GameObject {
   hasReadyBeenCalled = false;
   isSolid = false;
 
-  constructor(config: Config) {
-    this.position = config.position ?? new Vector2d(0, 0);
+  constructor(position?: Vector2d) {
+    this.position = position ?? new Vector2d(0, 0);
   }
 
   ready() {}
