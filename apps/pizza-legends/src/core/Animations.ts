@@ -1,23 +1,23 @@
-export type Keyframe = {
-  duration: number;
-  frames: {
-    time: number;
-    frame: number;
-  }[];
-};
+import { FrameManager } from "@/core";
 
 export class Animations {
   activeKey: string;
 
-  constructor() {
-    this.activeKey = "";
+  constructor(public keyframes: Record<string, FrameManager>) {
+    this.activeKey = Object.keys(keyframes)[0];
   }
 
   get frame() {
-    return "";
+    return this.keyframes[this.activeKey].frame;
   }
 
-  step(_delta: number) {}
+  step(delta: number) {
+    this.keyframes[this.activeKey].step(delta);
+  }
 
-  play() {}
+  play(key: string, startAtTime: number = 0) {
+    if (this.activeKey === key) return;
+    this.activeKey = key;
+    this.keyframes[this.activeKey].currentTime = startAtTime;
+  }
 }

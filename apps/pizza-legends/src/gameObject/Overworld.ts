@@ -1,5 +1,5 @@
 import { GameObject, KeyTracker, Vector2d } from "@/core";
-import { Hero } from "@/gameObject";
+import { Player } from "@/gameObject";
 import { DemoMap } from "@/maps";
 
 export class Overworld extends GameObject {
@@ -12,7 +12,7 @@ export class Overworld extends GameObject {
     this.keyTracker = new KeyTracker();
 
     this.sceneMap = new DemoMap();
-    this.player = new Hero(new Vector2d(5 * this.tileSize, 6 * this.tileSize));
+    this.player = new Player(new Vector2d(5 * this.tileSize, 6 * this.tileSize));
 
     this.addChild(this.sceneMap);
     this.addChild(this.player);

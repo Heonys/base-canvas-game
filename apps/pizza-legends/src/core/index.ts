@@ -4,3 +4,4 @@ export * from "./Resources";
 export * from "./GameLoop";
 export * from "./KeyTracker";
 export * from "./Animations";
+export * from "./FrameManager";
