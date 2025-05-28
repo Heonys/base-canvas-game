@@ -1,5 +1,23 @@
-export class Animations {
-  // activeKey: string;
+export type Keyframe = {
+  duration: number;
+  frames: {
+    time: number;
+    frame: number;
+  }[];
+};
 
-  constructor() {}
+export class Animations {
+  activeKey: string;
+
+  constructor() {
+    this.activeKey = "";
+  }
+
+  get frame() {
+    return "";
+  }
+
+  step(_delta: number) {}
+
+  play() {}
 }
