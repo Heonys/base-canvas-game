@@ -1,4 +1,4 @@
-import { Vector2d } from "@/core";
+import { Vector2d, eventEmitter } from "@/core";
 import { Layer } from "@/constants";
 import type { Overworld } from "@/gameObject";
 
@@ -48,6 +48,7 @@ export class GameObject {
   }
 
   removeChild(gameObject: GameObject) {
+    eventEmitter.unsubscribe(gameObject);
     this.children = this.children.filter((child) => child !== gameObject);
   }
 

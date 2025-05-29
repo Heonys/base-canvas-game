@@ -1,9 +1,45 @@
-class EventEmitter {
-  on() {}
+import { GameObject, Vector2d } from "@/core";
 
-  off() {}
+type EventListener<T> = {
+  id: number;
+  eventName: keyof T;
+  caller: GameObject;
+  fn: (payload: any) => any;
+};
 
-  emit() {}
+class EventEmitter<EventMap> {
+  listeners: EventListener<EventMap>[] = [];
+  nextId: number = 0;
+
+  on<T extends keyof EventMap>(
+    eventName: T,
+    caller: GameObject,
+    fn: (payload: EventMap[T]) => void,
+  ) {
+    this.nextId += 1;
+    this.listeners.push({ id: this.nextId, eventName, caller, fn });
+    return this.nextId;
+  }
+
+  off(id: number) {
+    this.listeners = this.listeners.filter((it) => it.id !== id);
+  }
+
+  emit<T extends keyof EventMap>(eventName: T, payload?: EventMap[T]) {
+    this.listeners.forEach((listener) => {
+      if (listener.eventName === eventName) {
+        listener.fn(payload);
+      }
+    });
+  }
+
+  unsubscribe(caller: GameObject) {
+    this.listeners = this.listeners.filter((it) => it.caller !== caller);
+  }
 }
 
-export const eventEmitter = new EventEmitter();
+type EventPayloadMap = {
+  PLAYER_POSITION: Vector2d;
+};
+
+export const eventEmitter = new EventEmitter<EventPayloadMap>();

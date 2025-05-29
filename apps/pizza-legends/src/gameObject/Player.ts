@@ -1,4 +1,4 @@
-import { Animations, FrameManager, GameObject, resources, Vector2d } from "@/core";
+import { Animations, eventEmitter, FrameManager, GameObject, resources, Vector2d } from "@/core";
 import { Direction } from "@/constants";
 import { Overworld, Sprite } from "@/gameObject";
 import { moveTowards } from "@/utils";
@@ -12,8 +12,8 @@ export class Player extends GameObject {
   isLocked = false;
   body: Sprite;
 
-  constructor(position?: Vector2d) {
-    super(position);
+  constructor(x: number, y: number) {
+    super(new Vector2d(x, y));
     this.destination = this.position.duplicate();
 
     this.body = new Sprite({
@@ -93,5 +93,6 @@ export class Player extends GameObject {
     if (this.lastX === this.position.x && this.lastY === this.position.y) return;
     this.lastX = this.position.x;
     this.lastY = this.position.y;
+    eventEmitter.emit("PLAYER_POSITION", this.position);
   }
 }

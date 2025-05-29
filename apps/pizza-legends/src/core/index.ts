@@ -5,3 +5,5 @@ export * from "./GameLoop";
 export * from "./KeyTracker";
 export * from "./Animations";
 export * from "./FrameManager";
+export * from "./EventEmitter";
+export * from "./Camera";
