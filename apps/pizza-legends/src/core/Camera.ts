@@ -7,8 +7,8 @@ export class Camera extends GameObject {
   }
 
   centerPositionOnTarget = (position: Vector2d) => {
-    const x = -position.x + this.tileSize / 2 + this.canvasWidth / 2;
-    const y = -position.y + this.tileSize / 2 + this.canvasHeight / 2;
+    const x = -position.x - this.tileSize / 2 + this.canvasWidth / 2;
+    const y = -position.y - this.tileSize / 2 + this.canvasHeight / 2;
     this.position = new Vector2d(x, y);
   };
 }

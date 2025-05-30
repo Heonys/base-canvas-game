@@ -11,12 +11,11 @@ body {
 
 #game-container {
     position: relative;
-    /* margin: 0 auto; */
-    outline: 1px solid #fff;    
-    /* transform: scale(2.7) translateY(50%) */
 }
 
 #game-container canvas {
-    width: 100%;
+    width: 90%;
+    margin: 0 auto;
+    display: block;
     image-rendering: pixelated;
 }

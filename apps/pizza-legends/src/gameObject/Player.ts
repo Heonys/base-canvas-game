@@ -1,8 +1,8 @@
 import { Animations, eventEmitter, FrameManager, GameObject, resources, Vector2d } from "@/core";
 import { Direction } from "@/constants";
 import { Overworld, Sprite } from "@/gameObject";
-import { moveTowards } from "@/utils";
-import { PlayerFrames } from "@/animations/player";
+import { isCollision, isSolidObject, moveTowards } from "@/utils";
+import { ActorFrames } from "@/animations/actor";
 
 export class Player extends GameObject {
   direction: Direction = Direction.DOWN;
@@ -23,14 +23,14 @@ export class Player extends GameObject {
       frameRows: 4,
       frameCols: 4,
       animations: new Animations({
-        "STAND-DOWN": new FrameManager(PlayerFrames.stand(0)),
-        "STAND-RIGHT": new FrameManager(PlayerFrames.stand(4)),
-        "STAND-UP": new FrameManager(PlayerFrames.stand(8)),
-        "STAND-LEFT": new FrameManager(PlayerFrames.stand(12)),
-        "WALK-DOWN": new FrameManager(PlayerFrames.walk(0)),
-        "WALK-RIGHT": new FrameManager(PlayerFrames.walk(4)),
-        "WALK-UP": new FrameManager(PlayerFrames.walk(8)),
-        "WALK-LEFT": new FrameManager(PlayerFrames.walk(12)),
+        "STAND-DOWN": new FrameManager(ActorFrames.stand(0)),
+        "STAND-RIGHT": new FrameManager(ActorFrames.stand(4)),
+        "STAND-UP": new FrameManager(ActorFrames.stand(8)),
+        "STAND-LEFT": new FrameManager(ActorFrames.stand(12)),
+        "WALK-DOWN": new FrameManager(ActorFrames.walk(0)),
+        "WALK-RIGHT": new FrameManager(ActorFrames.walk(4)),
+        "WALK-UP": new FrameManager(ActorFrames.walk(8)),
+        "WALK-LEFT": new FrameManager(ActorFrames.walk(12)),
       }),
     });
 
@@ -85,8 +85,12 @@ export class Player extends GameObject {
     }
 
     this.direction = root.keyTracker.direction ?? this.direction;
-    this.destination.x = nextX;
-    this.destination.y = nextY;
+
+    const { collisions, children } = root.sceneMap;
+    if (isCollision(collisions, nextX / this.tileSize, nextY / this.tileSize)) return;
+    if (isSolidObject(children, nextX, nextY)) return;
+
+    this.destination.moveTo(nextX, nextY);
   }
 
   onMoved() {

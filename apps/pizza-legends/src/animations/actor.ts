@@ -1,4 +1,4 @@
-export class PlayerFrames {
+export class ActorFrames {
   static stand(rootFrame: number) {
     return {
       duration: 0,

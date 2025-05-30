@@ -22,3 +22,15 @@ export function moveTowards(current: GameObject, destination: Vector2d, speed: n
 
   return distance;
 }
+
+export function isCollision(tileSet: Set<string>, x: number, y: number) {
+  return tileSet.has(`${x},${y}`);
+}
+
+export function isSolidObject(objects: GameObject[], x: number, y: number) {
+  return objects.some((obj) => obj.isSolid && obj.position.distanceTo(new Vector2d(x, y)) < 16);
+}
+
+export const gridCells = (n: number) => {
+  return n * 16;
+};
