@@ -1,5 +1,6 @@
+import { Direction } from "@/constants";
 import { resources, Vector2d } from "@/core";
-import { Npc, Sprite } from "@/gameObject";
+import { Actor, Sprite } from "@/gameObject";
 import { MapObject } from "@/maps";
 import { gridCells } from "@/utils";
 
@@ -15,15 +16,18 @@ export class DemoMap extends MapObject {
       }),
     );
     this.addChild(
-      new Npc({
+      new Actor({
+        id: "npc1",
         src: resources.images.npc,
         position: new Vector2d(gridCells(8), gridCells(8)),
-        behaviors: [
-          { type: "WALK-LEFT", destination: new Vector2d(gridCells(3), gridCells(8)) },
-          { type: "WALK-UP", destination: new Vector2d(gridCells(3), gridCells(3)) },
-          { type: "WALK-RIGHT", destination: new Vector2d(gridCells(8), gridCells(3)) },
-          { type: "WALK-DOWN", destination: new Vector2d(gridCells(8), gridCells(8)) },
-        ],
+        // iteration: Infinity,
+        // behaviors: [
+        //   { type: "WALK", dir: Direction.LEFT, destination: [3, 8] },
+        //   { type: "STAND", dir: Direction.RIGHT, duration: 500 },
+        //   { type: "WALK", dir: Direction.UP, destination: [3, 3] },
+        //   { type: "WALK", dir: Direction.RIGHT, destination: [8, 3] },
+        //   { type: "WALK", dir: Direction.DOWN, destination: [8, 8] },
+        // ],
       }),
     );
   }

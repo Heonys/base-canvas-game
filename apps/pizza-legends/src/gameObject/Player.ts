@@ -1,4 +1,12 @@
-import { Animations, eventEmitter, FrameManager, GameObject, resources, Vector2d } from "@/core";
+import {
+  Animations,
+  eventEmitter,
+  FrameManager,
+  GameObject,
+  resources,
+  store,
+  Vector2d,
+} from "@/core";
 import { Direction } from "@/constants";
 import { Overworld, Sprite } from "@/gameObject";
 import { isCollision, isSolidObject, moveTowards } from "@/utils";
@@ -9,11 +17,11 @@ export class Player extends GameObject {
   destination: Vector2d;
   lastX?: number;
   lastY?: number;
-  isLocked = false;
   body: Sprite;
 
   constructor(x: number, y: number) {
     super(new Vector2d(x, y));
+    store.register("player", this);
     this.destination = this.position.duplicate();
 
     this.body = new Sprite({
@@ -45,7 +53,7 @@ export class Player extends GameObject {
   }
 
   step(_delta: number, root: Overworld) {
-    if (this.isLocked) return;
+    if (root.isPause) return;
 
     const distance = moveTowards(this, this.destination, 1);
     if (distance <= 1) this.attemptMove(root);

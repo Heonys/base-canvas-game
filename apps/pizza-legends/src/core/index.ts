@@ -1,4 +1,5 @@
 export * from "./GameObject";
+export * from "./Store";
 export * from "./Vector2d";
 export * from "./Resources";
 export * from "./GameLoop";

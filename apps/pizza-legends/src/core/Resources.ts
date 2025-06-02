@@ -3,6 +3,7 @@ const toLoad = {
   hero: "/images/characters/people/hero.png",
   shadow: "/images/characters/shadow.png",
   npc: "/images/characters/people/npc1.png",
+  npc2: "/images/characters/people/npc2.png",
 };
 type ResourceKey = keyof typeof toLoad;
 

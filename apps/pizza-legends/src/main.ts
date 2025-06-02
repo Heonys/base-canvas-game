@@ -3,6 +3,7 @@ import { Overworld } from "@/gameObject";
 import { DemoMap } from "@/maps";
 
 import "./style.css";
+import { Direction } from "./constants";
 
 const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
@@ -29,3 +30,5 @@ const render = () => {
 
 const gameLoop = new GameLoop(update, render);
 gameLoop.start();
+
+overworld.startCutscene([{ id: "npc1", type: "WALK", dir: Direction.DOWN, destination: [3, 3] }]);
