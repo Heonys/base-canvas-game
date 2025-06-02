@@ -8,3 +8,4 @@ export * from "./Animations";
 export * from "./FrameManager";
 export * from "./EventEmitter";
 export * from "./Camera";
+export * from "./CutsceneHandler";

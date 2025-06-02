@@ -1,8 +1,8 @@
 export enum Direction {
-  UP = "UP",
-  DOWN = "DOWN",
-  LEFT = "LEFT",
-  RIGHT = "RIGHT",
+  UP = "up",
+  DOWN = "down",
+  LEFT = "left",
+  RIGHT = "right",
 }
 
 export const enum Layer {
@@ -21,3 +21,9 @@ export const keyToDirection: Record<string, Direction> = {
   KeyA: Direction.LEFT,
   KeyD: Direction.RIGHT,
 };
+
+export type Behavior =
+  | { type: "walk"; dir: Direction; destination: [x: number, y: number] }
+  | { type: "stand"; dir: Direction; duration: number };
+
+export type CutsceneBehavior<T = Behavior> = T extends T ? T & { id: string } : never;

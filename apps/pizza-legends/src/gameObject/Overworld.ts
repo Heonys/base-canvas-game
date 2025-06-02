@@ -1,6 +1,6 @@
-import { Direction, Layer } from "@/constants";
-import { Camera, eventEmitter, GameObject, KeyTracker, store } from "@/core";
-import { Actor, Player } from "@/gameObject";
+import { CutsceneBehavior, Layer } from "@/constants";
+import { Camera, CutsceneHandler, GameObject, KeyTracker } from "@/core";
+import { Player } from "@/gameObject";
 import { MapObject } from "@/maps";
 import { gridCells } from "@/utils";
 
@@ -50,52 +50,12 @@ export class Overworld extends GameObject {
     });
   }
 
-  async startCutscene(behaviors: Behavior[]) {
+  async startCutscene(behaviors: CutsceneBehavior[]) {
+    this.isCutscene = true;
     for (let i = 0; i < behaviors.length; i++) {
-      const handler = new OverworldEvent(behaviors[i]);
+      const handler = new CutsceneHandler(behaviors[i]);
       await handler.start();
     }
-  }
-}
-
-type Behavior =
-  | { id: string; type: "WALK"; dir: Direction; destination: [x: number, y: number] }
-  | { id: string; type: "STAND"; dir: Direction; duration: number };
-
-type Resolve = (value?: unknown) => void;
-
-class OverworldEvent extends GameObject {
-  constructor(public behavior: Behavior) {
-    super();
-  }
-
-  private STAND(resolve: Resolve) {
-    const target = store.find(this.behavior.id) as Actor;
-    target.pushBehaviors([this.behavior]);
-
-    const id = eventEmitter.on("COMPLATE_STAND", this, (gameobject) => {
-      if (gameobject === target) {
-        eventEmitter.off(id);
-        resolve();
-      }
-    });
-  }
-
-  private WALK(resolve: Resolve) {
-    const target = store.find(this.behavior.id) as Actor;
-    target.pushBehaviors([this.behavior]);
-
-    const id = eventEmitter.on("COMPLATE_WALK", this, (gameobject) => {
-      if (gameobject === target) {
-        eventEmitter.off(id);
-        resolve();
-      }
-    });
-  }
-
-  start() {
-    return new Promise((resolve) => {
-      this[this.behavior.type](resolve);
-    });
+    this.isCutscene = false;
   }
 }

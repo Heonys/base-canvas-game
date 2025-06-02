@@ -31,14 +31,14 @@ export class Player extends GameObject {
       frameRows: 4,
       frameCols: 4,
       animations: new Animations({
-        "STAND-DOWN": new FrameManager(ActorFrames.stand(0)),
-        "STAND-RIGHT": new FrameManager(ActorFrames.stand(4)),
-        "STAND-UP": new FrameManager(ActorFrames.stand(8)),
-        "STAND-LEFT": new FrameManager(ActorFrames.stand(12)),
-        "WALK-DOWN": new FrameManager(ActorFrames.walk(0)),
-        "WALK-RIGHT": new FrameManager(ActorFrames.walk(4)),
-        "WALK-UP": new FrameManager(ActorFrames.walk(8)),
-        "WALK-LEFT": new FrameManager(ActorFrames.walk(12)),
+        "stand-down": new FrameManager(ActorFrames.stand(0)),
+        "stand-right": new FrameManager(ActorFrames.stand(4)),
+        "stand-up": new FrameManager(ActorFrames.stand(8)),
+        "stand-left": new FrameManager(ActorFrames.stand(12)),
+        "walk-down": new FrameManager(ActorFrames.walk(0)),
+        "walk-right": new FrameManager(ActorFrames.walk(4)),
+        "walk-up": new FrameManager(ActorFrames.walk(8)),
+        "walk-left": new FrameManager(ActorFrames.walk(12)),
       }),
     });
 
@@ -51,9 +51,12 @@ export class Player extends GameObject {
       }),
     );
   }
+  ready() {
+    eventEmitter.emit("PLAYER_POSITION", this.position);
+  }
 
   step(_delta: number, root: Overworld) {
-    if (root.isPause) return;
+    if (root.isPause || root.isCutscene) return;
 
     const distance = moveTowards(this, this.destination, 1);
     if (distance <= 1) this.attemptMove(root);
@@ -65,39 +68,37 @@ export class Player extends GameObject {
     let nextY = this.destination.y;
 
     if (!root.keyTracker.direction) {
-      this.body.animations?.play(`STAND-${this.direction}`);
+      this.body.animations?.play(`stand-${this.direction}`);
       return;
     }
 
     switch (root.keyTracker.direction) {
       case Direction.DOWN: {
         nextY += this.tileSize;
-        this.body.animations?.play("WALK-DOWN");
+        this.body.animations?.play("walk-down");
         break;
       }
       case Direction.UP: {
         nextY -= this.tileSize;
-        this.body.animations?.play("WALK-UP");
+        this.body.animations?.play("walk-up");
         break;
       }
       case Direction.LEFT: {
         nextX -= this.tileSize;
-        this.body.animations?.play("WALK-LEFT");
+        this.body.animations?.play("walk-left");
         break;
       }
       case Direction.RIGHT: {
         nextX += this.tileSize;
-        this.body.animations?.play("WALK-RIGHT");
+        this.body.animations?.play("walk-right");
         break;
       }
     }
-
     this.direction = root.keyTracker.direction ?? this.direction;
 
     const { collisions, children } = root.sceneMap;
     if (isCollision(collisions, nextX / this.tileSize, nextY / this.tileSize)) return;
     if (isSolidObject(children, nextX, nextY)) return;
-
     this.destination.moveTo(nextX, nextY);
   }
 

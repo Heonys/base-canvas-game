@@ -31,4 +31,8 @@ const render = () => {
 const gameLoop = new GameLoop(update, render);
 gameLoop.start();
 
-overworld.startCutscene([{ id: "npc1", type: "WALK", dir: Direction.DOWN, destination: [3, 3] }]);
+overworld.startCutscene([
+  { id: "npc1", type: "walk", dir: Direction.UP, destination: [8, 8] },
+  { id: "npc1", type: "walk", dir: Direction.LEFT, destination: [6, 8] },
+  { id: "npc1", type: "stand", dir: Direction.LEFT, duration: 100 },
+]);
