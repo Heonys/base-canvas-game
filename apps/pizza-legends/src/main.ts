@@ -19,7 +19,6 @@ const update = (delta: number) => {
 const render = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   overworld.drawBackground(ctx);
-
   ctx.save();
   ctx.translate(overworld.camera.position.x, overworld.camera.position.y);
   overworld.drawObject(ctx);

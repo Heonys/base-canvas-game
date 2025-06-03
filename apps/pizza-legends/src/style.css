@@ -11,11 +11,15 @@ body {
 
 #game-container {
     position: relative;
+    transform: translateY(-10%);
 }
 
 #game-container canvas {
-    width: 90%;
-    margin: 0 auto;
-    display: block;
+    width: 100%;
     image-rendering: pixelated;
+}
+
+@font-face {
+  font-family: Retro;
+  src: url("/fonts/Retro Gaming.ttf");
 }

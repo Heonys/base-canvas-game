@@ -19,6 +19,7 @@ export class DemoMap extends MapObject {
         id: "npc1",
         src: resources.images.npc,
         position: new Vector2d(gridCells(8), gridCells(9)),
+        content: "What a wonderful day at work in the cave!",
       }),
     );
   }

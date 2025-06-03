@@ -4,6 +4,9 @@ const toLoad = {
   shadow: "/images/characters/shadow.png",
   npc: "/images/characters/people/npc1.png",
   npc2: "/images/characters/people/npc2.png",
+
+  textBox: "/images/text/text-box.png",
+  fontWhite: "/images/text/sprite-font-white.png",
 };
 type ResourceKey = keyof typeof toLoad;
 

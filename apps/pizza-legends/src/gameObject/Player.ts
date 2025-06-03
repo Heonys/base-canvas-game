@@ -53,10 +53,24 @@ export class Player extends GameObject {
   }
   ready() {
     eventEmitter.emit("PLAYER_POSITION", this.position);
+
+    // eventEmitter.on("PLAYER_POSITION", this, (position) => {
+    //   if (position.x === 4 * this.tileSize && position.y === 7 * this.tileSize) {
+    //     eventEmitter.emit("OPEN_TEXT_BOX", "What a wonderful day at work in the cave!");
+    //   }
+    // });
   }
 
   step(_delta: number, root: Overworld) {
     if (root.isPause || root.isCutscene) return;
+
+    if (root.keyTracker.getActionJustPressed("Space")) {
+      Array.from(store.values()).forEach((gameobject) => {
+        if (gameobject.position.equals(this.position.toNeighbor(this.direction))) {
+          eventEmitter.emit("OPEN_TEXT_BOX", gameobject);
+        }
+      });
+    }
 
     const distance = moveTowards(this, this.destination, 1);
     if (distance <= 1) this.attemptMove(root);

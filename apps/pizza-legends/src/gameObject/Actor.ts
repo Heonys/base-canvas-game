@@ -17,6 +17,7 @@ type ActorConfig = {
   id: string;
   src: ImageState;
   position: Vector2d;
+  content?: string;
 };
 
 export class Actor extends GameObject {
@@ -25,10 +26,12 @@ export class Actor extends GameObject {
   behavior?: Behavior;
   speed = 1;
   waitTime = 0;
+  content?: string;
 
   constructor(config: ActorConfig) {
     super(config.position);
     this.isSolid = true;
+    this.content = config.content;
     store.register(config.id, this);
 
     this.body = new Sprite({
@@ -94,5 +97,9 @@ export class Actor extends GameObject {
         break;
       }
     }
+  }
+
+  getContents() {
+    return this.content ?? null;
   }
 }

@@ -15,8 +15,8 @@ class Store {
     return this.map.has(id);
   }
 
-  entries() {
-    return this.map.entries();
+  values() {
+    return this.map.values();
   }
 
   remove(gameObject: GameObject) {

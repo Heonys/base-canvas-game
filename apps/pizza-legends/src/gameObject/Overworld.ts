@@ -1,6 +1,6 @@
 import { CutsceneBehavior, Layer } from "@/constants";
-import { Camera, CutsceneHandler, GameObject, KeyTracker } from "@/core";
-import { Player } from "@/gameObject";
+import { Camera, CutsceneHandler, eventEmitter, GameObject, KeyTracker } from "@/core";
+import { Player, TextBox } from "@/gameObject";
 import { MapObject } from "@/maps";
 import { gridCells } from "@/utils";
 
@@ -20,6 +20,22 @@ export class Overworld extends GameObject {
 
     this.addChild(this.player);
     this.addChild(this.camera);
+
+    eventEmitter.on("OPEN_TEXT_BOX", this, (gameobject) => {
+      const contents = gameobject.getContents();
+      if (!contents) return;
+
+      const textbox = new TextBox(contents);
+      this.addChild(textbox);
+
+      eventEmitter.emit("START_TEXT_BOX");
+      this.isPause = true;
+      const id = eventEmitter.on("END_TEXT_BOX", this, () => {
+        eventEmitter.off(id);
+        textbox.destroy();
+        this.isPause = false;
+      });
+    });
   }
 
   chageMap(map: MapObject) {

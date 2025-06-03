@@ -40,9 +40,11 @@ class EventEmitter<EventMap> {
 
 type EventPayloadMap = {
   PLAYER_POSITION: Vector2d;
-  GLOBAL_CUTSCENE: void;
   COMPLATE_STAND: GameObject;
   COMPLATE_WALK: GameObject;
+  OPEN_TEXT_BOX: GameObject;
+  START_TEXT_BOX: void;
+  END_TEXT_BOX: void;
 };
 
 export const eventEmitter = new EventEmitter<EventPayloadMap>();
