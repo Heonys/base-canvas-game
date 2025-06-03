@@ -1,4 +1,5 @@
 import { GameObject, Vector2d } from "@/core";
+import { MapObject } from "@/maps";
 
 type EventListener<T> = {
   id: number;
@@ -42,9 +43,10 @@ type EventPayloadMap = {
   PLAYER_POSITION: Vector2d;
   COMPLATE_STAND: GameObject;
   COMPLATE_WALK: GameObject;
-  OPEN_TEXT_BOX: GameObject;
+  OPEN_TEXT_BOX: GameObject | string;
   START_TEXT_BOX: void;
   END_TEXT_BOX: void;
+  CHANGE_SCENE: MapObject;
 };
 
 export const eventEmitter = new EventEmitter<EventPayloadMap>();

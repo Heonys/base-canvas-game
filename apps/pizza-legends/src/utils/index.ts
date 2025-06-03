@@ -1,3 +1,4 @@
+import { Direction } from "@/constants";
 import { GameObject, Vector2d } from "@/core";
 
 export function moveTowards(current: GameObject, destination: Vector2d, speed: number) {
@@ -31,6 +32,23 @@ export function isSolidObject(objects: GameObject[], x: number, y: number) {
   return objects.some((obj) => obj.isSolid && obj.position.distanceTo(new Vector2d(x, y)) < 16);
 }
 
-export const gridCells = (n: number) => {
+export function gridCells(n: number) {
   return n * 16;
-};
+}
+
+export function oppositeDirection(dir: Direction) {
+  switch (dir) {
+    case Direction.DOWN: {
+      return Direction.UP;
+    }
+    case Direction.UP: {
+      return Direction.DOWN;
+    }
+    case Direction.LEFT: {
+      return Direction.RIGHT;
+    }
+    case Direction.RIGHT: {
+      return Direction.LEFT;
+    }
+  }
+}

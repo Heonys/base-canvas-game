@@ -9,11 +9,10 @@ import {
 } from "@/core";
 import { Direction } from "@/constants";
 import { Overworld, Sprite } from "@/gameObject";
-import { isCollision, isSolidObject, moveTowards } from "@/utils";
+import { isCollision, isSolidObject, moveTowards, oppositeDirection } from "@/utils";
 import { ActorFrames } from "@/animations/actor";
 
 export class Player extends GameObject {
-  direction: Direction = Direction.DOWN;
   destination: Vector2d;
   lastX?: number;
   lastY?: number;
@@ -53,12 +52,6 @@ export class Player extends GameObject {
   }
   ready() {
     eventEmitter.emit("PLAYER_POSITION", this.position);
-
-    // eventEmitter.on("PLAYER_POSITION", this, (position) => {
-    //   if (position.x === 4 * this.tileSize && position.y === 7 * this.tileSize) {
-    //     eventEmitter.emit("OPEN_TEXT_BOX", "What a wonderful day at work in the cave!");
-    //   }
-    // });
   }
 
   step(_delta: number, root: Overworld) {
@@ -67,6 +60,7 @@ export class Player extends GameObject {
     if (root.keyTracker.getActionJustPressed("Space")) {
       Array.from(store.values()).forEach((gameobject) => {
         if (gameobject.position.equals(this.position.toNeighbor(this.direction))) {
+          gameobject.setDirection(oppositeDirection(this.direction));
           eventEmitter.emit("OPEN_TEXT_BOX", gameobject);
         }
       });

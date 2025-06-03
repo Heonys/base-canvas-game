@@ -21,7 +21,6 @@ type ActorConfig = {
 };
 
 export class Actor extends GameObject {
-  direction: Direction = Direction.DOWN;
   body: Sprite;
   behavior?: Behavior;
   speed = 1;
@@ -71,11 +70,11 @@ export class Actor extends GameObject {
 
     const behavior = this.behavior;
     if (!behavior) return;
-    if (root.player.position.distanceTo(this.position) < this.tileSize) return;
-    this.body.animations?.play(`${behavior.type}-${behavior.dir}`);
+    if (root.sceneMap.player.position.distanceTo(this.position) < this.tileSize) return;
 
     switch (behavior.type) {
       case "walk": {
+        this.body.animations?.play(`${behavior.type}-${behavior.dir}`);
         const [x, y] = behavior.destination;
         const distance = moveTowards(this, new Vector2d(gridCells(x), gridCells(y)), this.speed);
 
@@ -86,6 +85,7 @@ export class Actor extends GameObject {
         break;
       }
       case "stand": {
+        this.body.animations?.play(`${behavior.type}-${behavior.dir}`);
         this.direction = behavior.dir;
         if (this.waitTime === 0) {
           this.waitTime = behavior.duration;
@@ -101,5 +101,10 @@ export class Actor extends GameObject {
 
   getContents() {
     return this.content ?? null;
+  }
+
+  setDirection(dir: Direction) {
+    this.direction = dir;
+    this.body.animations?.play(`stand-${dir}`);
   }
 }

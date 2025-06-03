@@ -1,3 +1,4 @@
+import { Layer } from "@/constants";
 import { GameObject, ImageState, Vector2d, Animations } from "@/core";
 
 type SpriteConfig = {
@@ -8,6 +9,7 @@ type SpriteConfig = {
   animations?: Animations;
   frameRows?: number;
   frameCols?: number;
+  layer?: Layer;
 };
 
 export class Sprite extends GameObject {
@@ -25,9 +27,11 @@ export class Sprite extends GameObject {
     frameRows = 1,
     frameCols = 1,
     animations,
+    layer,
   }: SpriteConfig) {
     super(position);
     this.src = src;
+    this.layer = layer ?? Layer.Main;
     this.frameSize = frameSize;
     this.currentFrame = currentFrame;
     this.animations = animations;

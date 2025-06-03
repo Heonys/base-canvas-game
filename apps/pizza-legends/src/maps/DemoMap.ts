@@ -1,9 +1,12 @@
-import { resources, Vector2d } from "@/core";
-import { Actor, Sprite } from "@/gameObject";
+import { Layer } from "@/constants";
+import { GameObject, resources, Vector2d } from "@/core";
+import { Actor, Player, Sprite } from "@/gameObject";
 import { MapObject } from "@/maps";
 import { gridCells } from "@/utils";
 
 export class DemoMap extends MapObject {
+  player: GameObject;
+
   constructor() {
     super();
 
@@ -11,6 +14,14 @@ export class DemoMap extends MapObject {
     this.addChild(
       new Sprite({
         src: resources.images.map,
+        layer: Layer.Lower,
+        frameSize: new Vector2d(this.canvasWidth, this.canvasHeight),
+      }),
+    );
+    this.addChild(
+      new Sprite({
+        src: resources.images.map2,
+        layer: Layer.Upper,
         frameSize: new Vector2d(this.canvasWidth, this.canvasHeight),
       }),
     );
@@ -22,5 +33,8 @@ export class DemoMap extends MapObject {
         content: "What a wonderful day at work in the cave!",
       }),
     );
+
+    this.player = new Player(gridCells(5), gridCells(6));
+    this.addChild(this.player);
   }
 }

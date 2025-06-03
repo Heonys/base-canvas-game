@@ -1,12 +1,10 @@
 import { CutsceneBehavior, Layer } from "@/constants";
 import { Camera, CutsceneHandler, eventEmitter, GameObject, KeyTracker } from "@/core";
-import { Player, TextBox } from "@/gameObject";
+import { TextBox } from "@/gameObject";
 import { MapObject } from "@/maps";
-import { gridCells } from "@/utils";
 
 export class Overworld extends GameObject {
   sceneMap!: MapObject;
-  player: GameObject;
   keyTracker: KeyTracker;
   camera: Camera;
   isPause = false;
@@ -16,15 +14,18 @@ export class Overworld extends GameObject {
     super();
     this.keyTracker = new KeyTracker();
     this.camera = new Camera();
-    this.player = new Player(gridCells(5), gridCells(6));
-
-    this.addChild(this.player);
     this.addChild(this.camera);
 
-    eventEmitter.on("OPEN_TEXT_BOX", this, (gameobject) => {
-      const contents = gameobject.getContents();
-      if (!contents) return;
+    eventEmitter.on("OPEN_TEXT_BOX", this, (payload) => {
+      let contents: string | null;
 
+      if (payload instanceof GameObject) {
+        contents = payload.getContents();
+      } else {
+        contents = payload;
+      }
+
+      if (!contents) return;
       const textbox = new TextBox(contents);
       this.addChild(textbox);
 

@@ -1,9 +1,9 @@
 import { GameLoop } from "@/core";
 import { Overworld } from "@/gameObject";
 import { DemoMap } from "@/maps";
+import { Direction } from "@/constants";
 
 import "./style.css";
-import { Direction } from "./constants";
 
 const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
@@ -34,4 +34,6 @@ overworld.startCutscene([
   { id: "npc1", type: "walk", dir: Direction.UP, destination: [8, 8] },
   { id: "npc1", type: "walk", dir: Direction.LEFT, destination: [6, 8] },
   { id: "npc1", type: "stand", dir: Direction.LEFT, duration: 100 },
+  // { id: "root", type: "textbox", message: "test message" },
+  // { id: "npc1", type: "walk", dir: Direction.LEFT, destination: [2, 8] },
 ]);

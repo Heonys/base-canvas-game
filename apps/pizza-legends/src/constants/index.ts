@@ -24,6 +24,7 @@ export const keyToDirection: Record<string, Direction> = {
 
 export type Behavior =
   | { type: "walk"; dir: Direction; destination: [x: number, y: number] }
-  | { type: "stand"; dir: Direction; duration: number };
+  | { type: "stand"; dir: Direction; duration: number }
+  | { type: "textbox"; message: string };
 
 export type CutsceneBehavior<T = Behavior> = T extends T ? T & { id: string } : never;

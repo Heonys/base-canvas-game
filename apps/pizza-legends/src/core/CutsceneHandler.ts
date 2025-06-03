@@ -33,6 +33,17 @@ export class CutsceneHandler extends GameObject {
     });
   }
 
+  private textbox(resolve: Resolve) {
+    if (this.behavior.type !== "textbox") return;
+    const message = this.behavior.message;
+    eventEmitter.emit("OPEN_TEXT_BOX", message);
+
+    const id = eventEmitter.on("END_TEXT_BOX", this, () => {
+      eventEmitter.off(id);
+      resolve();
+    });
+  }
+
   start() {
     return new Promise((resolve) => {
       this[this.behavior.type](resolve);

@@ -1,11 +1,12 @@
 import { Vector2d, eventEmitter, store } from "@/core";
-import { Layer } from "@/constants";
+import { Direction, Layer } from "@/constants";
 import type { Overworld } from "@/gameObject";
 
 export class GameObject {
   canvasWidth = 352;
   canvasHeight = 198;
 
+  direction: Direction = Direction.DOWN;
   position: Vector2d;
   children: GameObject[] = [];
   parent: GameObject | null = null;
@@ -60,5 +61,9 @@ export class GameObject {
 
   getContents(): null | string {
     return null;
+  }
+
+  setDirection(dir: Direction) {
+    this.direction = dir;
   }
 }
