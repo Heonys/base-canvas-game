@@ -9,3 +9,4 @@ export * from "./FrameManager";
 export * from "./EventEmitter";
 export * from "./Camera";
 export * from "./CutsceneHandler";
+export * from "./SceneTransition";

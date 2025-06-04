@@ -18,8 +18,3 @@ body {
     width: 100%;
     image-rendering: pixelated;
 }
-
-@font-face {
-  font-family: Retro;
-  src: url("/fonts/Retro Gaming.ttf");
-}

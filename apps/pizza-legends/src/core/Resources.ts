@@ -1,8 +1,11 @@
 const toLoad = {
-  map: "/images/maps/DemoLower.png",
-  map2: "/images/maps/DemoUpper.png",
+  "demo-map": "/images/maps/DemoLower.png",
+  "demo-map-upper": "/images/maps/DemoUpper.png",
+  "map-kitchen": "/images/maps/KitchenLower.png",
+
   hero: "/images/characters/people/hero.png",
   shadow: "/images/characters/shadow.png",
+
   npc: "/images/characters/people/npc1.png",
   npc2: "/images/characters/people/npc2.png",
 

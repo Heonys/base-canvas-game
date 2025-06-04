@@ -1,5 +1,13 @@
 import { CutsceneBehavior, Layer } from "@/constants";
-import { Camera, CutsceneHandler, eventEmitter, GameObject, KeyTracker } from "@/core";
+import {
+  Camera,
+  CutsceneHandler,
+  eventEmitter,
+  GameObject,
+  KeyTracker,
+  SceneTransition,
+  store,
+} from "@/core";
 import { TextBox } from "@/gameObject";
 import { MapObject } from "@/maps";
 
@@ -9,13 +17,21 @@ export class Overworld extends GameObject {
   camera: Camera;
   isPause = false;
   isCutscene = false;
+  transition: SceneTransition;
 
   constructor() {
     super();
+    store.register("overworld", this);
+
     this.keyTracker = new KeyTracker();
     this.camera = new Camera();
-    this.addChild(this.camera);
+    this.transition = new SceneTransition();
 
+    this.addChild(this.camera);
+    this.addChild(this.transition);
+  }
+
+  ready() {
     eventEmitter.on("OPEN_TEXT_BOX", this, (payload) => {
       let contents: string | null;
 
@@ -35,6 +51,15 @@ export class Overworld extends GameObject {
         eventEmitter.off(id);
         textbox.destroy();
         this.isPause = false;
+      });
+    });
+
+    eventEmitter.on("CHANGE_SCENE", this, (mapObject) => {
+      this.transition.fadeOut(() => {
+        this.chageMap(mapObject);
+        this.transition.fadeIn(() => {
+          // ->
+        });
       });
     });
   }

@@ -18,8 +18,8 @@ export class Player extends GameObject {
   lastY?: number;
   body: Sprite;
 
-  constructor(x: number, y: number) {
-    super(new Vector2d(x, y));
+  constructor(postion: Vector2d) {
+    super(postion);
     store.register("player", this);
     this.destination = this.position.duplicate();
 
