@@ -1,14 +1,14 @@
-import { Layer } from "@/constants";
+import { BattleType, Layer } from "@/constants";
 import { resources, Vector2d } from "@/core";
 import { Sprite } from "@/gameObject";
 import { MapObject } from "@/maps";
 import { gridCells } from "@/utils";
-import { Battle } from "./Battle";
-import { Pizza } from "./Pizza";
+import { Battle } from "@/combat";
 
 export class BattleField extends MapObject {
-  constructor() {
+  constructor(onComplete?: () => void) {
     super(new Vector2d(88, 51));
+    this.layer = Layer.Upper;
 
     this.addChild(
       new Sprite({
@@ -41,27 +41,37 @@ export class BattleField extends MapObject {
       }),
     );
 
-    this.addChild(
-      new Pizza({
-        src: resources.images.s001,
-        battleType: resources.images.spicy,
-        position: new Vector2d(gridCells(1), gridCells(2)),
-        level: 1,
-      }),
-    );
-    this.addChild(
-      new Pizza({
-        src: resources.images.v001,
-        battleType: resources.images.veggie,
-        position: new Vector2d(gridCells(6), gridCells(1)),
-        level: 5,
-      }),
-    );
-  }
-
-  ready() {
     new Battle({
-      onComplete: () => {},
+      combatants: [
+        {
+          name: "Slice Samurai",
+          team: "player",
+          type: BattleType.spicy,
+          src: resources.images.s001,
+          icon: resources.images.spicy,
+          hp: 30,
+          maxHp: 50,
+          exp: 75,
+          level: 7,
+          status: null,
+        },
+        {
+          name: "Call Me Kale",
+          team: "enemy",
+          type: BattleType.veggie,
+          src: resources.images.v001,
+          icon: resources.images.veggie,
+          hp: 20,
+          maxHp: 50,
+          exp: 20,
+          level: 11,
+          status: null,
+        },
+      ],
+      onComplete,
+      field: this,
     });
   }
+
+  ready() {}
 }

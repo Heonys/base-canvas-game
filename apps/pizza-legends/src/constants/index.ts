@@ -1,3 +1,6 @@
+import type { Combatant } from "@/combat";
+import type { ImageState } from "@/core";
+
 export enum Direction {
   UP = "up",
   DOWN = "down",
@@ -37,3 +40,23 @@ export enum BattleType {
   fungi = "fungi",
   chill = "chill",
 }
+
+type Team = "player" | "enemy";
+type BattleTeam = {
+  queue: CombatantConfig[];
+  active: Combatant | null;
+};
+export type Teams = Record<Team, BattleTeam>;
+export type CombatantConfig = {
+  name: string;
+  team: Team;
+  type: BattleType;
+  src: ImageState;
+  icon: ImageState;
+  hp: number;
+  maxHp: number;
+  exp: number;
+  level: number;
+  actions?: string[];
+  status: any;
+};

@@ -1,10 +1,10 @@
-import { GameLoop, resources } from "@/core";
+import { GameLoop } from "@/core";
 import { Overworld } from "@/gameObject";
-import { DemoMap } from "@/maps";
-import { Direction } from "@/constants";
+// import { DemoMap } from "@/maps";
+// import { Direction } from "@/constants";
+import { BattleField } from "@/combat";
 
 import "./style.css";
-import { BattleField } from "./combat/BattleField";
 
 const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
