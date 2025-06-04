@@ -1,15 +1,14 @@
 import { Layer } from "@/constants";
-import { GameObject } from "@/core";
+import { GameObject, Vector2d } from "@/core";
 import { Sprite } from "@/gameObject";
 
-export abstract class MapObject extends GameObject {
-  abstract player: GameObject;
-
+export class MapObject extends GameObject {
+  player!: GameObject;
   collisions = new Set<`${number},${number}`>();
   background?: Sprite;
 
-  constructor() {
-    super();
+  constructor(position?: Vector2d) {
+    super(position);
     this.layer = Layer.Lower;
   }
 

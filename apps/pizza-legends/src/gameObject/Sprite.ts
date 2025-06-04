@@ -10,6 +10,7 @@ type SpriteConfig = {
   frameRows?: number;
   frameCols?: number;
   layer?: Layer;
+  offset?: Vector2d;
 };
 
 export class Sprite extends GameObject {
@@ -18,6 +19,7 @@ export class Sprite extends GameObject {
   currentFrame: number;
   frameMap = new Map<number, Vector2d>();
   animations?: Animations;
+  offset: Vector2d;
 
   constructor({
     src,
@@ -27,6 +29,7 @@ export class Sprite extends GameObject {
     frameRows = 1,
     frameCols = 1,
     animations,
+    offset = new Vector2d(0, 0),
     layer,
   }: SpriteConfig) {
     super(position);
@@ -35,6 +38,7 @@ export class Sprite extends GameObject {
     this.frameSize = frameSize;
     this.currentFrame = currentFrame;
     this.animations = animations;
+    this.offset = offset;
     this.buildFrameMap(frameRows, frameCols);
   }
 
@@ -65,8 +69,8 @@ export class Sprite extends GameObject {
       frame?.y ?? 0,
       this.frameSize.x,
       this.frameSize.y,
-      x,
-      y,
+      x + this.offset.x,
+      y + this.offset.y,
       this.frameSize.x,
       this.frameSize.y,
     );

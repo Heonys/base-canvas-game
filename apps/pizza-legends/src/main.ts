@@ -1,15 +1,17 @@
-import { GameLoop } from "@/core";
+import { GameLoop, resources } from "@/core";
 import { Overworld } from "@/gameObject";
 import { DemoMap } from "@/maps";
 import { Direction } from "@/constants";
 
 import "./style.css";
+import { BattleField } from "./combat/BattleField";
 
 const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 
 const overworld = new Overworld();
-overworld.chageMap(new DemoMap());
+// overworld.chageMap(new DemoMap());
+overworld.chageMap(new BattleField());
 
 const update = (delta: number) => {
   overworld.stepEntry(delta, overworld);
@@ -30,10 +32,10 @@ const render = () => {
 const gameLoop = new GameLoop(update, render);
 gameLoop.start();
 
-overworld.startCutscene([
-  { id: "npc1", type: "walk", dir: Direction.UP, destination: [8, 8] },
-  { id: "npc1", type: "walk", dir: Direction.LEFT, destination: [6, 8] },
-  { id: "npc1", type: "stand", dir: Direction.LEFT, duration: 100 },
-  // { id: "root", type: "textbox", message: "test message" },
-  // { id: "npc1", type: "walk", dir: Direction.LEFT, destination: [2, 8] },
-]);
+// overworld.startCutscene([
+//   { id: "npc1", type: "walk", dir: Direction.UP, destination: [8, 8] },
+//   { id: "npc1", type: "walk", dir: Direction.LEFT, destination: [6, 8] },
+//   { id: "npc1", type: "stand", dir: Direction.LEFT, duration: 100 },
+//   // { id: "root", type: "textbox", message: "test message" },
+//   // { id: "npc1", type: "walk", dir: Direction.LEFT, destination: [2, 8] },
+// ]);

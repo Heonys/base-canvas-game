@@ -1,3 +1,4 @@
+import { Battle } from "@/combat";
 import { CutsceneBehavior } from "@/constants";
 import { eventEmitter, GameObject, store } from "@/core";
 import { Actor } from "@/gameObject";
@@ -42,6 +43,13 @@ export class CutsceneHandler extends GameObject {
       eventEmitter.off(id);
       resolve();
     });
+  }
+
+  private battle(_resolve: Resolve) {
+    // const battle = new Battle({
+    //   onComplete: () => resolve(),
+    // });
+    // battle.start();
   }
 
   start() {

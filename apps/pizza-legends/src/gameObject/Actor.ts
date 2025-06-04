@@ -51,7 +51,6 @@ export class Actor extends GameObject {
       }),
     });
 
-    this.addChild(this.body);
     this.addChild(
       new Sprite({
         src: resources.images.shadow,
@@ -59,6 +58,7 @@ export class Actor extends GameObject {
         position: new Vector2d(-8, -18),
       }),
     );
+    this.addChild(this.body);
   }
 
   step(delta: number, root: Overworld) {

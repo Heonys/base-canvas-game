@@ -1,14 +1,14 @@
 import { GameObject } from "@/core";
 
-class Store {
-  private map = new Map<string, GameObject>();
+class Store<T> {
+  private map = new Map<string, T>();
 
   find(id: string) {
     return this.map.get(id);
   }
 
-  register(id: string, gameObject: GameObject) {
-    this.map.set(id, gameObject);
+  register(id: string, value: T) {
+    this.map.set(id, value);
   }
 
   has(id: string) {
@@ -19,9 +19,9 @@ class Store {
     return this.map.values();
   }
 
-  remove(gameObject: GameObject) {
+  remove(data: T) {
     for (const [key, value] of this.map.entries()) {
-      if (value === gameObject) {
+      if (value === data) {
         this.map.delete(key);
         return;
       }
@@ -29,4 +29,4 @@ class Store {
   }
 }
 
-export const store = new Store();
+export const store = new Store<GameObject>();

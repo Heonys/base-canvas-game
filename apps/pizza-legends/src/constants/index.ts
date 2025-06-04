@@ -25,6 +25,15 @@ export const keyToDirection: Record<string, Direction> = {
 export type Behavior =
   | { type: "walk"; dir: Direction; destination: [x: number, y: number] }
   | { type: "stand"; dir: Direction; duration: number }
-  | { type: "textbox"; message: string };
+  | { type: "textbox"; message: string }
+  | { type: "battle" };
 
 export type CutsceneBehavior<T = Behavior> = T extends T ? T & { id: string } : never;
+
+export enum BattleType {
+  normal = "normal",
+  spicy = "spicy",
+  veggie = "veggie",
+  fungi = "fungi",
+  chill = "chill",
+}

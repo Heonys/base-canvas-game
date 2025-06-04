@@ -41,7 +41,6 @@ export class Player extends GameObject {
       }),
     });
 
-    this.addChild(this.body);
     this.addChild(
       new Sprite({
         src: resources.images.shadow,
@@ -49,6 +48,7 @@ export class Player extends GameObject {
         position: new Vector2d(-8, -18),
       }),
     );
+    this.addChild(this.body);
   }
   ready() {
     eventEmitter.emit("PLAYER_POSITION", this.position);
