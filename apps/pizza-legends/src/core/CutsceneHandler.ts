@@ -1,7 +1,7 @@
-import { BattleField } from "@/combat";
 import { CutsceneBehavior } from "@/constants";
 import { eventEmitter, GameObject, store } from "@/core";
 import { Actor } from "@/gameObject";
+import { BattleField } from "@/maps";
 
 type Resolve = (value?: unknown) => void;
 

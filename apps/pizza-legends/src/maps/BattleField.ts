@@ -6,8 +6,8 @@ import { gridCells } from "@/utils";
 import { Battle } from "@/combat";
 
 export class BattleField extends MapObject {
-  constructor(onComplete?: () => void) {
-    super(new Vector2d(88, 51));
+  constructor(public onComplete?: () => void) {
+    super(new Vector2d(88, 30));
     this.layer = Layer.Upper;
 
     this.addChild(
@@ -40,7 +40,9 @@ export class BattleField extends MapObject {
         frameCols: 4,
       }),
     );
+  }
 
+  ready() {
     new Battle({
       combatants: [
         {
@@ -53,6 +55,7 @@ export class BattleField extends MapObject {
           maxHp: 50,
           exp: 75,
           level: 7,
+          actions: ["damage1"],
           status: null,
         },
         {
@@ -65,13 +68,12 @@ export class BattleField extends MapObject {
           maxHp: 50,
           exp: 20,
           level: 11,
+          actions: ["damage1"],
           status: null,
         },
       ],
-      onComplete,
+      onComplete: this.onComplete,
       field: this,
     });
   }
-
-  ready() {}
 }

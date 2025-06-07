@@ -1,4 +1,4 @@
-import { Direction } from "@/constants";
+import { Direction, Team } from "@/constants";
 import { GameObject, Vector2d } from "@/core";
 
 export function moveTowards(current: GameObject, destination: Vector2d, speed: number) {
@@ -51,4 +51,8 @@ export function oppositeDirection(dir: Direction) {
       return Direction.LEFT;
     }
   }
+}
+
+export function oppositeTeam(team: Team) {
+  return team === "player" ? "enemy" : "player";
 }

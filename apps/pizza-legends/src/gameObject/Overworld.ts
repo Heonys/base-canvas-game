@@ -57,9 +57,7 @@ export class Overworld extends GameObject {
     eventEmitter.on("CHANGE_SCENE", this, (mapObject) => {
       this.transition.fadeOut(() => {
         this.chageMap(mapObject);
-        this.transition.fadeIn(() => {
-          // ->
-        });
+        this.transition.fadeIn();
       });
     });
   }

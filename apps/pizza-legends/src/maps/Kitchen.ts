@@ -30,4 +30,6 @@ export class Kitchen extends MapObject {
     this.player = new Player(startPosition ?? new Vector2d(gridCells(5), gridCells(5)));
     this.addChild(this.player);
   }
+
+  ready() {}
 }

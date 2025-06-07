@@ -1,4 +1,4 @@
-import { Combatant } from "@/combat";
+import { Combatant, TurnCycle } from "@/combat";
 import { Vector2d } from "@/core";
 import { gridCells } from "@/utils";
 import { MapObject } from "@/maps";
@@ -14,7 +14,7 @@ export class Battle {
   playerPosition = new Vector2d(gridCells(1), gridCells(2));
   enemyPosition = new Vector2d(gridCells(6), gridCells(1));
 
-  combatants: CombatantConfig[];
+  turnCycle: TurnCycle;
   field: MapObject;
   teams: Teams = {
     player: { queue: [], active: null },
@@ -22,25 +22,25 @@ export class Battle {
   };
 
   constructor(public config: Config) {
-    this.combatants = this.config.combatants;
     this.field = this.config.field;
     this.setupTeams();
-    this.setupDrawing();
+
+    this.turnCycle = new TurnCycle(this);
+    this.turnCycle.start();
   }
 
   private setupTeams() {
-    this.combatants.forEach((it) => {
-      this.teams[it.team].queue.push(it);
+    this.config.combatants.forEach((config) => {
+      const position = config.team === "player" ? this.playerPosition : this.enemyPosition;
+      const combatant = new Combatant(position, config);
+
+      const team = this.teams[config.team];
+      team.queue.push(combatant);
+      if (!team.active) {
+        team.active = combatant;
+        this.field.addChild(combatant);
+      }
     });
-  }
-
-  private setupDrawing() {
-    // 일단은 config으로 들어오는 전투원 목록은 플에이어와 적이 최소 한개씩 있다고 가정
-    const player = this.teams.player.queue[0];
-    const enmy = this.teams.enemy.queue[0];
-
-    this.field.addChild(new Combatant(this.playerPosition, { ...player }, this));
-    this.field.addChild(new Combatant(this.enemyPosition, { ...enmy }, this));
   }
 
   start() {

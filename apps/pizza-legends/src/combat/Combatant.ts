@@ -1,15 +1,18 @@
 import { CombatantConfig } from "@/constants";
 import { GameObject, resources, Vector2d } from "@/core";
-import { Battle } from "@/combat";
 import { Sprite, SpriteText } from "@/gameObject";
 
 export class Combatant extends GameObject {
+  name: string;
+  actions: string[];
+
   constructor(
     public position: Vector2d,
     public config: CombatantConfig,
-    public battle: Battle,
   ) {
     super(position);
+    this.actions = config.actions ?? [];
+    this.name = config.name;
 
     this.addChild(
       new Sprite({

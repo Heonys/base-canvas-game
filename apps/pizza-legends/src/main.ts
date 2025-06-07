@@ -1,8 +1,7 @@
 import { GameLoop } from "@/core";
 import { Overworld } from "@/gameObject";
-// import { DemoMap } from "@/maps";
+import { DemoMap } from "@/maps";
 // import { Direction } from "@/constants";
-import { BattleField } from "@/combat";
 
 import "./style.css";
 
@@ -10,8 +9,7 @@ const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 
 const overworld = new Overworld();
-// overworld.chageMap(new DemoMap());
-overworld.chageMap(new BattleField());
+overworld.chageMap(new DemoMap());
 
 const update = (delta: number) => {
   overworld.stepEntry(delta, overworld);

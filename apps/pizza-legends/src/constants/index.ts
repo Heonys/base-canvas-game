@@ -41,9 +41,9 @@ export enum BattleType {
   chill = "chill",
 }
 
-type Team = "player" | "enemy";
+export type Team = "player" | "enemy";
 type BattleTeam = {
-  queue: CombatantConfig[];
+  queue: Combatant[];
   active: Combatant | null;
 };
 export type Teams = Record<Team, BattleTeam>;

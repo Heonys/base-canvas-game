@@ -17,15 +17,15 @@ export class SceneTransition extends GameObject {
     this.layer = Layer.Upper;
   }
 
-  fadeOut(callback: Resolve) {
+  fadeOut(callback?: Resolve) {
     this.startTransition("OUT", callback);
   }
 
-  fadeIn(callback: Resolve) {
+  fadeIn(callback?: Resolve) {
     this.startTransition("IN", callback);
   }
 
-  startTransition(direction: FadeDirection, callback: Resolve) {
+  startTransition(direction: FadeDirection, callback?: Resolve) {
     this.isActive = true;
     this.fadeDirection = direction;
     this.elapsedTime = 0;

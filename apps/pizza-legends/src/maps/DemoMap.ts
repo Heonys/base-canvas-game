@@ -1,7 +1,7 @@
 import { Layer } from "@/constants";
 import { eventEmitter, GameObject, resources, Vector2d } from "@/core";
 import { Actor, Player, Sprite } from "@/gameObject";
-import { MapObject, Kitchen } from "@/maps";
+import { MapObject, Kitchen, BattleField } from "@/maps";
 import { gridCells } from "@/utils";
 
 export class DemoMap extends MapObject {
@@ -43,6 +43,13 @@ export class DemoMap extends MapObject {
     eventEmitter.on("PLAYER_POSITION", this, (position) => {
       if (position.equals(exit)) {
         eventEmitter.emit("CHANGE_SCENE", new Kitchen());
+      }
+    });
+
+    const battle = new Vector2d(gridCells(5), gridCells(7));
+    eventEmitter.on("PLAYER_POSITION", this, (position) => {
+      if (position.equals(battle)) {
+        eventEmitter.emit("CHANGE_SCENE", new BattleField());
       }
     });
   }
