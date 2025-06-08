@@ -1,4 +1,4 @@
-## base-canvas-rpg 
+## base-canvas-game 
 
 - rpg-kit
 - turn-based

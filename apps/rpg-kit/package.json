@@ -1,5 +1,5 @@
 {
-  "name": "@base-canvas-rpg/rpg-kit",
+  "name": "@base-canvas-game/rpg-kit",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@base-canvas-rpg/common": "1.0.0"
+    "@base-canvas-game/common": "1.0.0"
   },
   "devDependencies": {
     "typescript": "~5.7.2",
