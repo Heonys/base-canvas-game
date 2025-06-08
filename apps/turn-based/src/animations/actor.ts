@@ -17,4 +17,14 @@ export class ActorFrames {
       ],
     };
   }
+
+  static blink(rootFrame: number) {
+    return {
+      duration: 200,
+      frames: [
+        { time: 0, frame: rootFrame },
+        { time: 100, frame: rootFrame + 1 },
+      ],
+    };
+  }
 }

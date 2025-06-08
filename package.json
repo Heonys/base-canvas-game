@@ -6,8 +6,8 @@
   "scripts": {
     "preinstall": "pnpm dlx only-allow pnpm",
     "kit": "pnpm -F @base-canvas-rpg/rpg-kit dev",
-    "pizza": "pnpm -F @base-canvas-rpg/pizza-legends dev",
-    "dev": "pnpm pizza"
+    "turn": "pnpm -F @base-canvas-rpg/turn-based dev",
+    "dev": "pnpm turn"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",

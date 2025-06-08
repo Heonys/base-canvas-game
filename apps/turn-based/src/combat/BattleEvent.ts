@@ -1,12 +1,12 @@
 import { eventEmitter, GameObject } from "@/core";
 import { Combatant, Command } from "@/combat";
+import { delay } from "@/utils";
 
 type Resolve = (value?: unknown) => void;
 export type BattleEvents =
   | { type: "textbox"; message: string; caster?: string; enemy?: string; action?: string }
   | { type: "command"; caster: Combatant; enemy: Combatant }
-  | { type: "animation"; animation: string }
-  | { type: "state"; damage: number };
+  | { type: "state"; damage: number; caster?: Combatant; enemy?: Combatant };
 
 export class BattleEvent extends GameObject {
   constructor(public event: BattleEvents) {
@@ -39,11 +39,19 @@ export class BattleEvent extends GameObject {
     new Command({
       caster: this.event.caster,
       enemy: this.event.enemy,
-      onComplate: (actions) => resolve(actions),
+      onComplete: (actions) => resolve(actions),
     });
   }
 
-  animation() {}
+  async state(resolve: Resolve) {
+    if (this.event.type !== "state") return;
+    const { damage, caster, enemy } = this.event;
+    if (!caster || !enemy) return;
 
-  state() {}
+    enemy.config.hp -= damage;
+    enemy.isBlink = true;
+    await delay(500);
+    enemy.isBlink = false;
+    resolve();
+  }
 }

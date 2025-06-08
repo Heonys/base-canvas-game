@@ -14,9 +14,14 @@ export class GameObject {
   isSolid = false;
   layer: Layer = Layer.Main;
   tileSize = 16;
+  timers: { remaining: number; callback: () => void }[] = [];
 
   constructor(position?: Vector2d) {
     this.position = position ?? new Vector2d(0, 0);
+  }
+
+  wait(ms: number, callback: () => void) {
+    this.timers.push({ remaining: ms, callback });
   }
 
   ready() {}

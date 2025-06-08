@@ -1,10 +1,13 @@
+import { ActorFrames } from "@/animations/actor";
 import { CombatantConfig } from "@/constants";
-import { GameObject, resources, Vector2d } from "@/core";
+import { Animations, FrameManager, GameObject, resources, Vector2d } from "@/core";
 import { Sprite, SpriteText } from "@/gameObject";
 
 export class Combatant extends GameObject {
   name: string;
   actions: string[];
+  body: Sprite;
+  isBlink = false;
 
   constructor(
     public position: Vector2d,
@@ -29,19 +32,24 @@ export class Combatant extends GameObject {
       }),
     );
     this.addChild(
-      new Sprite({
-        src: config.src,
-        frameSize: new Vector2d(32, 32),
-      }),
-    );
-
-    this.addChild(
       new SpriteText({
         content: `${config.level}`,
         offset: new Vector2d(29, -18),
         spacing: 0,
       }),
     );
+
+    this.body = new Sprite({
+      src: config.src,
+      frameSize: new Vector2d(32, 32),
+      frameCols: 2,
+      animations: new Animations({
+        stand: new FrameManager(ActorFrames.stand(0)),
+        blink: new FrameManager(ActorFrames.blink(0)),
+      }),
+    });
+
+    this.addChild(this.body);
   }
 
   draw(ctx: CanvasRenderingContext2D, x: number, y: number): void {
@@ -56,7 +64,7 @@ export class Combatant extends GameObject {
     ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
     ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
 
-    const hpPercent = this.config.hp / this.config.maxHp;
+    const hpPercent = Math.max(this.config.hp, 0) / this.config.maxHp;
     const barX = x + 10;
     const barY = y - 4;
     const barWidth = 26;
@@ -79,5 +87,11 @@ export class Combatant extends GameObject {
     ctx.fillRect(barX, expBarY, barWidth * expPercent, expBarHeight);
     ctx.fillStyle = "#ffc934";
     ctx.fillRect(barX, expBarY + 1, barWidth * expPercent, expBarHeight);
+
+    if (this.isBlink) {
+      this.body.animations?.play("blink");
+    } else {
+      this.body.animations?.play("stand");
+    }
   }
 }

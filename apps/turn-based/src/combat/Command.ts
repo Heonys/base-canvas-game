@@ -3,7 +3,7 @@ import { actions, BattleEvents, Combatant } from "@/combat";
 type Config = {
   caster: Combatant;
   enemy: Combatant;
-  onComplate: (payload: { name: string; actions: BattleEvents[] }) => void;
+  onComplete: (payload: { name: string; actions: BattleEvents[] }) => void;
 };
 
 export class Command {
@@ -14,6 +14,6 @@ export class Command {
   decide() {
     const actionEvents = actions.find("damage1");
     if (!actionEvents) return;
-    this.config.onComplate({ name: "damage1", actions: actionEvents });
+    this.config.onComplete({ name: "damage1", actions: actionEvents });
   }
 }

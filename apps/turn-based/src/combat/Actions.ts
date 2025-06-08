@@ -3,7 +3,7 @@ import { BattleEvents } from "@/combat";
 class Actions {
   private actionsMap = new Map<string, BattleEvents[]>();
 
-  addAction(name: string, flow: BattleEvents[]) {
+  add(name: string, flow: BattleEvents[]) {
     this.actionsMap.set(name, flow);
   }
 
@@ -14,10 +14,9 @@ class Actions {
 
 const actions = new Actions();
 
-actions.addAction("damage1", [
+actions.add("damage1", [
   { type: "textbox", message: "{CASTER} uses {ACTION}! for {ENEMY}" },
-  // { type: "animation", animation: "spin" },
-  // { type: "state", damage: 10 },
+  { type: "state", damage: 10 },
 ]);
 
 export { actions };

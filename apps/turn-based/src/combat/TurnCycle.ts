@@ -31,15 +31,23 @@ export class TurnCycle {
     for (let i = 0; i < actions.length; i++) {
       const action = actions[i];
 
-      if (action.type === "textbox") {
-        await this.waitForEvent({
-          ...action,
-          caster: caster.name,
-          action: name,
-          enemy: enemy.name,
-        });
-      } else {
-        await this.waitForEvent(action);
+      switch (action.type) {
+        case "textbox": {
+          await this.waitForEvent({
+            ...action,
+            caster: caster.name,
+            action: name,
+            enemy: enemy.name,
+          });
+          break;
+        }
+        case "state": {
+          await this.waitForEvent({ ...action, caster, enemy });
+          break;
+        }
+        case "command": {
+          await this.waitForEvent(action);
+        }
       }
     }
 

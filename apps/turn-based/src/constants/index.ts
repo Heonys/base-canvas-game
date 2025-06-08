@@ -58,5 +58,4 @@ export type CombatantConfig = {
   exp: number;
   level: number;
   actions?: string[];
-  status: any;
 };

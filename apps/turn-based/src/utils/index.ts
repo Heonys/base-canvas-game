@@ -56,3 +56,7 @@ export function oppositeDirection(dir: Direction) {
 export function oppositeTeam(team: Team) {
   return team === "player" ? "enemy" : "player";
 }
+
+export function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

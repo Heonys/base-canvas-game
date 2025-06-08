@@ -46,7 +46,7 @@ export class BattleField extends MapObject {
     new Battle({
       combatants: [
         {
-          name: "Slice Samurai",
+          name: "Samurai",
           team: "player",
           type: BattleType.spicy,
           src: resources.images.s001,
@@ -56,10 +56,9 @@ export class BattleField extends MapObject {
           exp: 75,
           level: 7,
           actions: ["damage1"],
-          status: null,
         },
         {
-          name: "Call Me Kale",
+          name: "Kale",
           team: "enemy",
           type: BattleType.veggie,
           src: resources.images.v001,
@@ -69,7 +68,6 @@ export class BattleField extends MapObject {
           exp: 20,
           level: 11,
           actions: ["damage1"],
-          status: null,
         },
       ],
       onComplete: this.onComplete,
