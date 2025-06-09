@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { DemoScene } from "@/scenes";
 
-new Phaser.Game({
+const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   scale: {
     mode: Phaser.Scale.FIT,
@@ -11,6 +11,12 @@ new Phaser.Game({
   },
   physics: {
     default: "arcade",
+    arcade: {
+      // gravity: { y: 400 },
+      debug: true,
+    },
   },
   scene: [DemoScene],
-});
+};
+
+new Phaser.Game(config);
