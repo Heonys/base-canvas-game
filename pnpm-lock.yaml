@@ -36,11 +36,11 @@ importers:
         specifier: ^6.3.1
         version: 6.3.5(@types/node@22.15.30)
 
-  apps/flappy:
+  apps/dino:
     dependencies:
       phaser:
-        specifier: 3.24.1
-        version: 3.24.1(webpack@5.99.9)
+        specifier: 3.60.0
+        version: 3.60.0
     devDependencies:
       typescript:
         specifier: ~5.8.3
@@ -1311,6 +1311,10 @@ packages:
     resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
     dev: false
 
+  /eventemitter3@5.0.1:
+    resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
+    dev: false
+
   /events@3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
     engines: {node: '>=0.8.x'}
@@ -1719,6 +1723,12 @@ packages:
       path: 0.12.7
     transitivePeerDependencies:
       - webpack
+    dev: false
+
+  /phaser@3.60.0:
+    resolution: {integrity: sha512-IKUy35EnoEVcl2EmJ8WOyK4X8OoxHYdlhZLgRGpNrvD1fEagYffhVmwHcapE/tGiLgyrnezmXIo5RrH2NcrTHw==}
+    dependencies:
+      eventemitter3: 5.0.1
     dev: false
 
   /picocolors@1.1.1:

@@ -1,8 +1,9 @@
 import Phaser from "phaser";
-import { DemoScene } from "@/scenes";
+import { PreloadScene, PlayScene } from "@/scenes";
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
+  pixelArt: true,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -11,12 +12,8 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   physics: {
     default: "arcade",
-    arcade: {
-      // gravity: { y: 400 },
-      debug: true,
-    },
   },
-  scene: [DemoScene],
+  scene: [PreloadScene, PlayScene],
 };
 
 new Phaser.Game(config);
