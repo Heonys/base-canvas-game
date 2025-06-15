@@ -8,7 +8,8 @@
     "kit": "pnpm -F @base-canvas-game/rpg-kit dev",
     "turn": "pnpm -F @base-canvas-game/turn-based dev",
     "dino": "pnpm -F @base-canvas-game/dino dev",
-    "dev": "pnpm dino"
+    "plat": "pnpm -F @base-canvas-game/platformer dev",
+    "dev": "pnpm plat"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",

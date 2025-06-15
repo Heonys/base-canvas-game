@@ -9,7 +9,12 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image("restart", "/images/restart.png");
     this.load.image("game-over", "/images/game-over.png");
 
+    this.load.audio("jump", "/media/jump.m4a");
+    this.load.audio("hit", "/media/hit.m4a");
+    this.load.audio("reach", "/media/reach.m4a");
+
     this.load.image("ground", "/images/ground.png");
+    this.load.image("cloud", "/images/cloud.png");
 
     this.load.image("obstacle-1", "/images/cactuses_1.png");
     this.load.image("obstacle-2", "/images/cactuses_2.png");
@@ -17,6 +22,11 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image("obstacle-4", "/images/cactuses_4.png");
     this.load.image("obstacle-5", "/images/cactuses_5.png");
     this.load.image("obstacle-6", "/images/cactuses_6.png");
+
+    this.load.spritesheet("obstacle-7", "/images/enemy-bird.png", {
+      frameWidth: 184 / 2,
+      frameHeight: 77,
+    });
 
     this.load.image("dino-hurt", "/images/dino-hurt.png");
     this.load.spritesheet("dino-run", "/images/dino-run.png", {
