@@ -1,13 +1,18 @@
+import { Player } from "@/entities";
+
 export class PlayScene extends Phaser.Scene {
+  player!: Player;
+
   constructor() {
     super("play");
   }
 
   create() {
+    this.player = new Player(this, 100, 250);
     const layer = this.createLayer();
-    const player = this.createPalyer();
 
-    this.physics.add.collider(player, layer.colliders);
+    this.physics.add.collider(this.player, layer.colliders);
+    this.setupCamera(this.player);
   }
 
   createLayer() {
@@ -24,10 +29,10 @@ export class PlayScene extends Phaser.Scene {
     return { environment, platforms, colliders };
   }
 
-  createPalyer() {
-    const player = this.physics.add.sprite(100, 250, "player");
-    player.body.setGravityY(300);
-    player.setCollideWorldBounds(true);
-    return player;
+  setupCamera(object: Phaser.Physics.Arcade.Sprite) {
+    const OFFSET = 600;
+    this.physics.world.setBounds(0, 0, this.scale.width + OFFSET, this.scale.height + 200);
+    this.cameras.main.setBounds(0, 0, this.scale.width + OFFSET, this.scale.height).setZoom(1.5);
+    this.cameras.main.startFollow(object);
   }
 }
