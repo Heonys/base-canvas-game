@@ -1,5 +1,6 @@
 export class Player extends Phaser.Physics.Arcade.Sprite {
   speed = 200;
+  gravity = 500;
   cursor: Phaser.Types.Input.Keyboard.CursorKeys;
   jumpCount = 0;
   moreJumps = 1;
@@ -19,11 +20,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   init() {
-    this.setDepth(1);
-
-    const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setGravityY(500);
-    this.setCollideWorldBounds(true);
+    this.setGravityY(this.gravity)
+      .setDepth(1)
+      .setCollideWorldBounds(true)
+      .setOrigin(0.5, 1)
+      .setBodySize(20, 36);
   }
 
   createAnimation() {
