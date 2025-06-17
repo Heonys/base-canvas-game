@@ -30,6 +30,7 @@ export class PlayScene extends Phaser.Scene {
         spawnPoint.y!,
       );
       this.enemies.add(enemy);
+      enemy.setColliderLayer(layer.colliders);
     });
 
     this.physics.add.collider(this.player, layer.colliders);
