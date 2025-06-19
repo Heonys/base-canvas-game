@@ -11,8 +11,11 @@ export class Enemies extends Phaser.GameObjects.Group {
     return { Birdman };
   }
 
-  addCollider(object: Phaser.Types.Physics.Arcade.ArcadeColliderType) {
-    this.scene.physics.add.collider(this, object);
+  addCollider(
+    object: Phaser.Types.Physics.Arcade.ArcadeColliderType,
+    callback?: Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
+  ) {
+    this.scene.physics.add.collider(this, object, callback);
     return this;
   }
 }

@@ -1,4 +1,7 @@
+import { SHARED_CONFIG } from "@/main";
+
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
+  damage = 20;
   speed = 50;
   gravity = 500;
   steepnes = 0.2;
@@ -82,8 +85,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       }
     }
 
-    this.graphics.clear();
-    this.graphics.strokeLineShape(this.ray);
+    if (SHARED_CONFIG.debug) {
+      this.graphics.clear();
+      this.graphics.strokeLineShape(this.ray);
+    }
 
     if (this.colliderLayer) {
       const hits = this.colliderLayer.getTilesWithinShape(this.ray);

@@ -1,9 +1,18 @@
+import { HealthBar } from "@/hud";
+import { SHARED_CONFIG } from "@/main";
+import { Enemy } from "@/entities";
+
 export class Player extends Phaser.Physics.Arcade.Sprite {
+  hp = 100;
+  hpBar: HealthBar;
   speed = 200;
   gravity = 500;
+  bounceVelocity = 250;
   cursor: Phaser.Types.Input.Keyboard.CursorKeys;
   jumpCount = 0;
   moreJumps = 1;
+
+  hasBeenHit = false;
 
   constructor(
     public scene: Phaser.Scene,
@@ -14,6 +23,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.cursor = this.scene.input.keyboard!.createCursorKeys();
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
+
+    this.hpBar = new HealthBar(
+      this.scene,
+      this.hp,
+      SHARED_CONFIG.cameraTopLeft.x + 5,
+      SHARED_CONFIG.cameraTopLeft.y + 5,
+    );
 
     this.init();
     this.createAnimation();
@@ -50,8 +66,37 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
+  handleHit(enemy: Enemy) {
+    if (this.hasBeenHit) return;
+    this.hasBeenHit = true;
+    this.hp -= enemy.damage;
+    this.hpBar.decrease(this.hp);
+
+    if (this.body?.touching.right) {
+      this.setVelocity(-this.bounceVelocity, -this.bounceVelocity);
+    } else {
+      this.setVelocity(this.bounceVelocity, -this.bounceVelocity);
+    }
+
+    const hitTween = this.scene.tweens.add({
+      targets: this,
+      duration: 100,
+      repeat: -1,
+      alpha: 0,
+      yoyo: true,
+    });
+
+    this.scene.time.delayedCall(1000, () => {
+      this.hasBeenHit = false;
+      hitTween.stop();
+      this.setAlpha(1);
+    });
+  }
+
   preUpdate(time: number, delta: number) {
     super.preUpdate(time, delta);
+    if (this.hasBeenHit) return;
+
     const { left, right, space } = this.cursor;
     const body = this.body as Phaser.Physics.Arcade.Body;
     const isOnFloor = body.onFloor();
