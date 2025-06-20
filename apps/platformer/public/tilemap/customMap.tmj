@@ -213,7 +213,7 @@
                  "name":"spawn2",
                  "point":true,
                  "rotation":0,
-                 "type":"Birdman",
+                 "type":"Snaky",
                  "visible":true,
                  "width":0,
                  "x":481,

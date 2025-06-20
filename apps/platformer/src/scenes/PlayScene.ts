@@ -1,4 +1,4 @@
-import { Projectile } from "@/attacks";
+import { Weapon } from "@/attacks";
 import { Enemy, Player } from "@/entities";
 import { Enemies } from "@/groups";
 import { SHARED_CONFIG } from "@/main";
@@ -36,13 +36,16 @@ export class PlayScene extends Phaser.Scene {
     });
 
     this.physics.add.collider(this.player, layer.colliders);
-    this.enemies //
+    this.enemies
       .addCollider(layer.colliders)
       .addCollider(this.player, (enemy) => {
         this.player.handleHit(enemy as Enemy);
       })
       .addCollider(this.player.projectiles, (enemy, projectile) => {
-        (enemy as Enemy).onHit(projectile as Projectile);
+        (enemy as Enemy).onHit(projectile as Weapon);
+      })
+      .addOverlap(this.player.melee, (enemy, melee) => {
+        (enemy as Enemy).onHit(melee as Weapon);
       });
     this.setupCamera(this.player);
     this.createAnimation();

@@ -2,6 +2,7 @@ import { HealthBar } from "@/hud";
 import { SHARED_CONFIG } from "@/main";
 import { Enemy } from "@/entities";
 import { Projectiles } from "@/groups";
+import { Melee } from "@/attacks";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   hp = 100;
@@ -16,6 +17,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   facing = Phaser.Physics.Arcade.FACING_RIGHT;
   cursor: Phaser.Types.Input.Keyboard.CursorKeys;
   projectiles: Projectiles;
+  melee: Melee;
 
   constructor(
     public scene: Phaser.Scene,
@@ -27,6 +29,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
     this.projectiles = new Projectiles(this.scene);
+    this.melee = new Melee(this.scene, 0, 0, "shword-attack");
 
     this.hpBar = new HealthBar(
       this.scene,
@@ -75,6 +78,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       frameRate: 14,
       repeat: 0,
     });
+
+    this.scene.anims.create({
+      key: "sword-swing",
+      frames: this.scene.anims.generateFrameNumbers("shword-attack", { start: 0, end: 2 }),
+      frameRate: 20,
+      repeat: 0,
+    });
   }
 
   handleHit(enemy: Enemy) {
@@ -109,10 +119,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.hasBeenHit) return;
 
     const qKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    const eKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
     if (Phaser.Input.Keyboard.JustDown(qKey)) {
       this.projectiles.fire(this);
       this.anims.play("throw", true);
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(eKey)) {
+      this.melee.swing(this);
     }
 
     const { left, right, space } = this.cursor;

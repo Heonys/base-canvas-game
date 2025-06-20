@@ -1,4 +1,4 @@
-import { Birdman, Enemy } from "@/entities";
+import { Birdman, Enemy, Snaky } from "@/entities";
 
 type EnemyConstructor = new (scene: Phaser.Scene, x: number, y: number) => Enemy;
 
@@ -9,7 +9,7 @@ export class Enemies extends Phaser.GameObjects.Group {
   }
 
   get enemyClassMap(): Record<string, EnemyConstructor> {
-    return { Birdman };
+    return { Birdman, Snaky };
   }
 
   addCollider(
@@ -17,6 +17,14 @@ export class Enemies extends Phaser.GameObjects.Group {
     callback?: Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
   ) {
     this.scene.physics.add.collider(this, object, callback);
+    return this;
+  }
+
+  addOverlap(
+    object: Phaser.Types.Physics.Arcade.ArcadeColliderType,
+    callback?: Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
+  ) {
+    this.scene.physics.add.overlap(this, object, callback);
     return this;
   }
 
@@ -31,7 +39,21 @@ export class Enemies extends Phaser.GameObjects.Group {
     this.scene.anims.create({
       key: "birdman-hurt",
       frames: this.scene.anims.generateFrameNumbers("birdman", { start: 25, end: 26 }),
-      frameRate: 5,
+      frameRate: 10,
+      repeat: 0,
+    });
+
+    this.scene.anims.create({
+      key: "snaky-idle",
+      frames: this.scene.anims.generateFrameNumbers("snaky", { start: 0, end: 8 }),
+      frameRate: 8,
+      repeat: -1,
+    });
+
+    this.scene.anims.create({
+      key: "snaky-hurt",
+      frames: this.scene.anims.generateFrameNumbers("snaky", { start: 21, end: 22 }),
+      frameRate: 10,
       repeat: 0,
     });
   }

@@ -1,6 +1,7 @@
 import { SpriteEffect } from "@/effects";
+import { Weapon } from "@/attacks";
 
-export class Projectile extends Phaser.Physics.Arcade.Sprite {
+export class Projectile extends Weapon {
   speed = 300;
   maxDistance = 200;
   currnetDistance = 0;
@@ -14,9 +15,6 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
     key: string,
   ) {
     super(scene, x, y, key);
-    this.scene.add.existing(this);
-    this.scene.physics.add.existing(this);
-
     this.setBodySize(this.width - 13, this.height - 20);
   }
 
@@ -24,10 +22,6 @@ export class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.activate(true);
     this.body?.reset(x, y);
     this.setVelocityX(this.speed);
-  }
-
-  activate(isActive: boolean) {
-    this.setActive(isActive).setVisible(isActive);
   }
 
   cleanupHit(target: Phaser.Physics.Arcade.Sprite) {

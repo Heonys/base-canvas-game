@@ -1,8 +1,8 @@
 import { SHARED_CONFIG } from "@/main";
-import { Projectile } from "@/attacks";
+import { Weapon } from "@/attacks";
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
-  hp = 40;
+  hp = 400;
   damage = 20;
   speed = 50;
   gravity = 500;
@@ -41,8 +41,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       .setCollideWorldBounds(true)
       .setOrigin(0.5, 1)
       .setImmovable(true)
-      .setBodySize(20, 45)
-      .setOffset(10, 20)
       .setVelocityX(this.speed);
   }
 
@@ -113,9 +111,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.colliderLayer = layer;
   }
 
-  onHit(source: Projectile) {
-    source.cleanupHit(this);
+  onHit(source: Weapon) {
     this.hp -= source.damage;
+    source.cleanupHit(this);
 
     if (this.hp <= 0) {
       this.setTint(0xff0000);
