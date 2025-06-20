@@ -5,6 +5,7 @@ type EnemyConstructor = new (scene: Phaser.Scene, x: number, y: number) => Enemy
 export class Enemies extends Phaser.GameObjects.Group {
   constructor(scene: Phaser.Scene) {
     super(scene);
+    this.createAnimation();
   }
 
   get enemyClassMap(): Record<string, EnemyConstructor> {
@@ -17,5 +18,21 @@ export class Enemies extends Phaser.GameObjects.Group {
   ) {
     this.scene.physics.add.collider(this, object, callback);
     return this;
+  }
+
+  createAnimation() {
+    this.scene.anims.create({
+      key: "birdman-idle",
+      frames: this.scene.anims.generateFrameNumbers("birdman", { start: 0, end: 12 }),
+      frameRate: 8,
+      repeat: -1,
+    });
+
+    this.scene.anims.create({
+      key: "birdman-hurt",
+      frames: this.scene.anims.generateFrameNumbers("birdman", { start: 25, end: 26 }),
+      frameRate: 5,
+      repeat: 0,
+    });
   }
 }

@@ -1,3 +1,4 @@
+import { Projectile } from "@/attacks";
 import { Enemy } from "@/entities";
 
 export class Birdman extends Enemy {
@@ -7,20 +8,17 @@ export class Birdman extends Enemy {
     y: number,
   ) {
     super(scene, x, y, "birdman");
-    this.createAnimation();
   }
-
-  createAnimation() {
-    this.scene.anims.create({
-      key: "birdman-idle",
-      frames: this.scene.anims.generateFrameNumbers("birdman", { start: 0, end: 12 }),
-      frameRate: 8,
-      repeat: -1,
-    });
-  }
-
   override preUpdate(time: number, delta: number) {
     super.preUpdate(time, delta);
+
+    if (!this.active) return;
+    if (this.isPlayingAnims("birdman-hurt")) return;
     this.anims.play("birdman-idle", true);
+  }
+
+  onHit(source: Projectile) {
+    super.onHit(source);
+    this.anims.play("birdman-hurt", true);
   }
 }

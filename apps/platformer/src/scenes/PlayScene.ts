@@ -1,3 +1,4 @@
+import { Projectile } from "@/attacks";
 import { Enemy, Player } from "@/entities";
 import { Enemies } from "@/groups";
 import { SHARED_CONFIG } from "@/main";
@@ -35,12 +36,16 @@ export class PlayScene extends Phaser.Scene {
     });
 
     this.physics.add.collider(this.player, layer.colliders);
-    this.enemies
+    this.enemies //
+      .addCollider(layer.colliders)
       .addCollider(this.player, (enemy) => {
         this.player.handleHit(enemy as Enemy);
       })
-      .addCollider(layer.colliders);
+      .addCollider(this.player.projectiles, (enemy, projectile) => {
+        (enemy as Enemy).onHit(projectile as Projectile);
+      });
     this.setupCamera(this.player);
+    this.createAnimation();
   }
 
   createLayer() {
@@ -69,5 +74,14 @@ export class PlayScene extends Phaser.Scene {
       .setBounds(0, 0, this.scale.width + OFFSET, this.scale.height)
       .setZoom(SHARED_CONFIG.zoomFactor);
     this.cameras.main.startFollow(object);
+  }
+
+  createAnimation() {
+    this.anims.create({
+      key: "hit-effect",
+      frames: this.anims.generateFrameNumbers("hit-effect", { start: 0, end: 4 }),
+      frameRate: 10,
+      repeat: 0,
+    });
   }
 }

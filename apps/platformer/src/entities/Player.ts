@@ -1,6 +1,7 @@
 import { HealthBar } from "@/hud";
 import { SHARED_CONFIG } from "@/main";
 import { Enemy } from "@/entities";
+import { Projectiles } from "@/groups";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   hp = 100;
@@ -8,11 +9,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   speed = 200;
   gravity = 500;
   bounceVelocity = 250;
-  cursor: Phaser.Types.Input.Keyboard.CursorKeys;
   jumpCount = 0;
   moreJumps = 1;
-
   hasBeenHit = false;
+
+  facing = Phaser.Physics.Arcade.FACING_RIGHT;
+  cursor: Phaser.Types.Input.Keyboard.CursorKeys;
+  projectiles: Projectiles;
 
   constructor(
     public scene: Phaser.Scene,
@@ -23,6 +26,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.cursor = this.scene.input.keyboard!.createCursorKeys();
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
+    this.projectiles = new Projectiles(this.scene);
 
     this.hpBar = new HealthBar(
       this.scene,
@@ -64,6 +68,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       frameRate: 2,
       repeat: 1,
     });
+
+    this.scene.anims.create({
+      key: "throw",
+      frames: this.scene.anims.generateFrameNumbers("player-throw", { start: 0, end: 6 }),
+      frameRate: 14,
+      repeat: 0,
+    });
   }
 
   handleHit(enemy: Enemy) {
@@ -97,15 +108,24 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     super.preUpdate(time, delta);
     if (this.hasBeenHit) return;
 
+    const qKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+
+    if (Phaser.Input.Keyboard.JustDown(qKey)) {
+      this.projectiles.fire(this);
+      this.anims.play("throw", true);
+    }
+
     const { left, right, space } = this.cursor;
     const body = this.body as Phaser.Physics.Arcade.Body;
     const isOnFloor = body.onFloor();
     const jumpable = this.jumpCount < this.moreJumps;
 
     if (left.isDown) {
+      this.facing = Phaser.Physics.Arcade.FACING_LEFT;
       this.setVelocityX(-this.speed);
       this.setFlipX(true);
     } else if (right.isDown) {
+      this.facing = Phaser.Physics.Arcade.FACING_RIGHT;
       this.setVelocityX(this.speed);
       this.setFlipX(false);
     } else {
@@ -121,6 +141,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.jumpCount = 0;
     }
 
+    if (this.isPlayingAnims("throw")) return;
+
     if (isOnFloor) {
       if (body.velocity.x === 0) {
         this.anims.play("idle", true);
@@ -130,5 +152,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     } else {
       this.anims.play("jump", true);
     }
+  }
+
+  isPlayingAnims(key: string) {
+    return this.anims.isPlaying && this.anims.currentAnim?.key === key;
   }
 }

@@ -9,7 +9,7 @@ export const SHARED_CONFIG = {
   width: WIDTH,
   height: HEIGHT,
   zoomFactor: ZOOM_FACTOR,
-  debug: true,
+  debug: false,
   cameraTopLeft: {
     x: (WIDTH - WIDTH / ZOOM_FACTOR) / 2,
     y: (HEIGHT - HEIGHT / ZOOM_FACTOR) / 2,

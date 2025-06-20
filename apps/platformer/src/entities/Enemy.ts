@@ -1,6 +1,8 @@
 import { SHARED_CONFIG } from "@/main";
+import { Projectile } from "@/attacks";
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
+  hp = 40;
   damage = 20;
   speed = 50;
   gravity = 500;
@@ -46,6 +48,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   override preUpdate(time: number, delta: number) {
     super.preUpdate(time, delta);
+
+    if (this.getBounds().bottom > this.scene.scale.height) {
+      this.graphics.clear();
+      this.setActive(false);
+      this.destroy();
+      return;
+    }
     this.patrol(time);
   }
 
@@ -102,5 +111,21 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   setColliderLayer(layer: Phaser.Tilemaps.TilemapLayer) {
     this.colliderLayer = layer;
+  }
+
+  onHit(source: Projectile) {
+    source.cleanupHit(this);
+    this.hp -= source.damage;
+
+    if (this.hp <= 0) {
+      this.setTint(0xff0000);
+      this.setVelocity(0, -200);
+      this.body!.checkCollision.none = true;
+      this.setCollideWorldBounds(false);
+    }
+  }
+
+  isPlayingAnims(key: string) {
+    return this.anims.isPlaying && this.anims.currentAnim?.key === key;
   }
 }
