@@ -36,6 +36,10 @@ export class PlayScene extends Phaser.Scene {
     });
 
     this.physics.add.collider(this.player, layer.colliders);
+    this.physics.add.collider(this.player, this.enemies.projectiles, (_player, object) => {
+      const projectile = object as Weapon;
+      this.player.handleHit(projectile);
+    });
     this.enemies
       .addCollider(layer.colliders)
       .addCollider(this.player, (enemy) => {

@@ -1,5 +1,6 @@
 import { SHARED_CONFIG } from "@/main";
 import { Weapon } from "@/attacks";
+import { Projectiles } from "@/groups";
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
   hp = 400;
@@ -7,9 +8,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   speed = 50;
   gravity = 500;
   steepnes = 0.2;
+  facing = Phaser.Physics.Arcade.FACING_RIGHT;
 
   graphics: Phaser.GameObjects.Graphics;
   colliderLayer?: Phaser.Tilemaps.TilemapLayer;
+  projectiles?: Projectiles;
   lastTime = 0;
   timeTreshold = 100;
 
@@ -82,12 +85,14 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         const x1 = body.x;
         const y1 = body.y + body.halfHeight;
         this.ray.setTo(x1, y1, x1 - this.raySize * this.steepnes, y1 + this.raySize);
+        this.facing = Phaser.Physics.Arcade.FACING_LEFT;
         break;
       }
       case Phaser.Physics.Arcade.FACING_RIGHT: {
         const x1 = body.x + body.width;
         const y1 = body.y + body.halfHeight;
         this.ray.setTo(x1, y1, x1 + this.raySize * this.steepnes, y1 + this.raySize);
+        this.facing = Phaser.Physics.Arcade.FACING_RIGHT;
         break;
       }
     }
@@ -122,6 +127,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.setCollideWorldBounds(false);
     }
   }
+
+  cleanupHit(_target: Phaser.Physics.Arcade.Sprite) {}
 
   isPlayingAnims(key: string) {
     return this.anims.isPlaying && this.anims.currentAnim?.key === key;

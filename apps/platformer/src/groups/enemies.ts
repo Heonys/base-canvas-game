@@ -12,6 +12,18 @@ export class Enemies extends Phaser.GameObjects.Group {
     return { Birdman, Snaky };
   }
 
+  get projectiles() {
+    const projectiles = new Phaser.GameObjects.Group(this.scene);
+
+    this.getChildren().forEach((it) => {
+      const enemy = it as Enemy;
+      if (enemy.projectiles) {
+        projectiles.addMultiple(enemy.projectiles.getChildren());
+      }
+    });
+    return projectiles;
+  }
+
   addCollider(
     object: Phaser.Types.Physics.Arcade.ArcadeColliderType,
     callback?: Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
@@ -55,6 +67,13 @@ export class Enemies extends Phaser.GameObjects.Group {
       frames: this.scene.anims.generateFrameNumbers("snaky", { start: 21, end: 22 }),
       frameRate: 10,
       repeat: 0,
+    });
+
+    this.scene.anims.create({
+      key: "fireball",
+      frames: [{ key: "fireball-1" }, { key: "fireball-2" }],
+      frameRate: 5,
+      repeat: -1,
     });
   }
 }

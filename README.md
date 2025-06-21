@@ -2,3 +2,5 @@
 
 - rpg-kit
 - turn-based
+- dino
+- platformer 

@@ -18,10 +18,12 @@ export class Projectile extends Weapon {
     this.setBodySize(this.width - 13, this.height - 20);
   }
 
-  fire(x: number, y: number) {
+  fire(x: number, y: number, anim?: string) {
     this.activate(true);
     this.body?.reset(x, y);
     this.setVelocityX(this.speed);
+
+    if (anim) this.anims.play(anim, true);
   }
 
   cleanupHit(target: Phaser.Physics.Arcade.Sprite) {
