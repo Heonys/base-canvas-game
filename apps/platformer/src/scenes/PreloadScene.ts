@@ -8,6 +8,14 @@ export class PreloadScene extends Phaser.Scene {
     this.load.image("tileset-1", "/images/main_lev_build_1.png");
     this.load.image("tileset-2", "/images/main_lev_build_2.png");
 
+    this.load.image("diamond", "/images/collectibles/diamond.png");
+    this.load.image("diamond-1", "/images/collectibles/diamond_big_01.png");
+    this.load.image("diamond-2", "/images/collectibles/diamond_big_02.png");
+    this.load.image("diamond-3", "/images/collectibles/diamond_big_03.png");
+    this.load.image("diamond-4", "/images/collectibles/diamond_big_04.png");
+    this.load.image("diamond-5", "/images/collectibles/diamond_big_05.png");
+    this.load.image("diamond-6", "/images/collectibles/diamond_big_06.png");
+
     this.load.image("fireball-1", "/images/weapons/improved_fireball_001.png");
     this.load.image("fireball-2", "/images/weapons/improved_fireball_002.png");
 

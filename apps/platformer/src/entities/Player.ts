@@ -52,18 +52,27 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       .setBodySize(20, 36);
   }
 
-  handleHit(source: Enemy | Weapon) {
+  onHit(source: Enemy | Weapon) {
     if (this.hasBeenHit) return;
     this.hasBeenHit = true;
     this.hp -= source.damage;
     this.hpBar.decrease(this.hp);
 
-    if (this.body?.touching.right) {
-      this.setVelocity(-this.bounceVelocity, -this.bounceVelocity);
+    if (source.body) {
+      if (this.body?.touching.right) {
+        this.setVelocity(-this.bounceVelocity, -this.bounceVelocity);
+      } else {
+        this.setVelocity(this.bounceVelocity, -this.bounceVelocity);
+      }
     } else {
-      this.setVelocity(this.bounceVelocity, -this.bounceVelocity);
+      if (this.body?.blocked.right) {
+        this.setVelocity(-this.bounceVelocity, -this.bounceVelocity);
+      } else {
+        this.setVelocity(this.bounceVelocity, -this.bounceVelocity);
+      }
     }
-    source.cleanupHit(this);
+
+    source.cleanupHit?.(this);
 
     const hitTween = this.scene.tweens.add({
       targets: this,
@@ -203,5 +212,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       frameRate: 5,
       repeat: -1,
     });
+  }
+
+  addCollider(
+    object: Phaser.Types.Physics.Arcade.ArcadeColliderType,
+    callback?: Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
+  ) {
+    this.scene.physics.add.collider(this, object, callback);
+    return this;
+  }
+
+  addOverlap(
+    object: Phaser.Types.Physics.Arcade.ArcadeColliderType,
+    callback?: Phaser.Types.Physics.Arcade.ArcadePhysicsCallback,
+  ) {
+    this.scene.physics.add.overlap(this, object, callback);
+    return this;
   }
 }
