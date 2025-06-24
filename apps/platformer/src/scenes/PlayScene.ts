@@ -3,12 +3,15 @@ import { Collectable, Enemy, Player } from "@/entities";
 import { Enemies, Collectables } from "@/groups";
 import { Hud } from "@/hud";
 import { SHARED_CONFIG } from "@/main";
+import { eventEmitter } from "@/core";
 
 export class PlayScene extends Phaser.Scene {
   player!: Player;
   enemies!: Enemies;
   collectables!: Collectables;
   hud!: Hud;
+  bgDark!: Phaser.GameObjects.TileSprite;
+  bgSky!: Phaser.GameObjects.TileSprite;
 
   score = 0;
 
@@ -16,14 +19,19 @@ export class PlayScene extends Phaser.Scene {
     super("play");
   }
 
-  create() {
+  create(data?: { restart: boolean }) {
+    if (!data?.restart) {
+      this.setupEvents();
+      this.createAnimation();
+    }
+
     const layer = this.createLayer();
-    this.createAnimation();
-    this.player = new Player(this, layer.startPoint.x!, layer.startPoint.y!);
-    this.enemies = new Enemies(this);
+    this.player = new Player(this, layer.startPoint.x!, layer.startPoint.y!, data?.restart);
+    this.enemies = new Enemies(this, data?.restart);
     this.collectables = new Collectables(this);
     this.hud = new Hud(this);
 
+    this.createBackground(layer.bg);
     const endLine = this.physics.add
       .sprite(layer.endPoint.x!, layer.endPoint.y!, "empty")
       .setAlpha(0)
@@ -31,6 +39,8 @@ export class PlayScene extends Phaser.Scene {
 
     const endLineOverlap = this.physics.add.overlap(this.player, endLine, () => {
       endLineOverlap.active = false;
+      this.registry.inc("level");
+      this.scene.restart({ restart: true });
     });
 
     layer.spawns.objects.forEach((spawnPoint) => {
@@ -79,13 +89,14 @@ export class PlayScene extends Phaser.Scene {
   }
 
   createLayer() {
-    const map = this.make.tilemap({ key: "map" });
+    const map = this.make.tilemap({ key: `level-${this.getCurrentLevel()}` });
     const tileset1 = map.addTilesetImage("main_lev_build_1", "tileset-1")!;
-    // const tileset2 = map.addTilesetImage("main_lev_build_2", "tileset-2")!;
+    const bgTileset = map.addTilesetImage("bg-dark", "bg-dark")!;
 
     const colliders = map.createLayer("colliders", tileset1)!;
     colliders.setCollisionByExclusion([-1], true);
 
+    map.createLayer("distance", bgTileset)?.setDepth(-12);
     map.createLayer("environment", tileset1);
     map.createLayer("platforms", tileset1);
     const traps = map.createLayer("traps", tileset1)!;
@@ -94,11 +105,27 @@ export class PlayScene extends Phaser.Scene {
     const points = map.getObjectLayer("points")!;
     const spawns = map.getObjectLayer("spawns")!;
     const collectables = map.getObjectLayer("collectables")!;
+    const bg = map.getObjectLayer("bg")!.objects[0];
 
     const startPoint = points.objects.find((it) => it.name === "start")!;
     const endPoint = points.objects.find((it) => it.name === "end")!;
 
-    return { colliders, startPoint, endPoint, spawns, collectables, traps };
+    return { colliders, startPoint, endPoint, spawns, collectables, traps, bg };
+  }
+
+  createBackground(tile: Phaser.Types.Tilemaps.TiledObject) {
+    this.bgDark = this.add
+      .tileSprite(tile.x!, tile.y!, this.scale.width, tile.height!, "bg-dark")
+      .setOrigin(0, 1)
+      .setDepth(-10)
+      .setScrollFactor(0, 1);
+
+    this.bgSky = this.add
+      .tileSprite(0, 0, this.scale.width, 180, "bg-sky")
+      .setOrigin(0, 0)
+      .setDepth(-11)
+      .setScrollFactor(0, 1)
+      .setScale(1.5);
   }
 
   setupCamera(object: Phaser.Physics.Arcade.Sprite) {
@@ -131,5 +158,20 @@ export class PlayScene extends Phaser.Scene {
       frameRate: 5,
       repeat: -1,
     });
+  }
+
+  setupEvents() {
+    eventEmitter.on("PLAYER_LOOSE", () => {
+      this.scene.restart({ restart: true });
+    });
+  }
+
+  update() {
+    this.bgDark.tilePositionX = this.cameras.main.scrollX * 0.3;
+    this.bgSky.tilePositionX = this.cameras.main.scrollX * 0.1;
+  }
+
+  getCurrentLevel() {
+    return this.registry.get("level") ?? 1;
   }
 }

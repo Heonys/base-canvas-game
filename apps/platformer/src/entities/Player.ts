@@ -3,9 +3,10 @@ import { SHARED_CONFIG } from "@/main";
 import { Enemy } from "@/entities";
 import { Projectiles } from "@/groups";
 import { Melee, Weapon } from "@/attacks";
+import { eventEmitter } from "@/core";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
-  hp = 100;
+  hp = 20;
   hpBar: HealthBar;
   speed = 200;
   gravity = 500;
@@ -24,6 +25,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     public scene: Phaser.Scene,
     x: number,
     y: number,
+    public restart?: boolean,
   ) {
     super(scene, x, y, "player");
     this.cursor = this.scene.input.keyboard!.createCursorKeys();
@@ -40,7 +42,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     );
 
     this.init();
-    this.createAnimation();
+    if (!restart) {
+      this.createAnimation();
+    }
     this.handleSlide();
   }
 
@@ -54,8 +58,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   onHit(source: Enemy | Weapon) {
     if (this.hasBeenHit) return;
+    this.hp -= source.damage ?? (source as any).properties.damage;
+
+    if (this.hp <= 0) {
+      this.gameOver();
+      return;
+    }
+
     this.hasBeenHit = true;
-    this.hp -= source.damage;
     this.hpBar.decrease(this.hp);
 
     if (source.body) {
@@ -89,8 +99,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
+  gameOver() {
+    eventEmitter.emit("PLAYER_LOOSE");
+  }
+
   handleSlide() {
     this.scene.input.keyboard?.on("keydown-DOWN", () => {
+      console.log("down");
+
       this.setBodySize(this.body!.width, this.height / 2);
       this.setOffset(6, this.height / 2);
       this.setVelocityX(0);
@@ -107,6 +123,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   preUpdate(time: number, delta: number) {
     super.preUpdate(time, delta);
     if (this.hasBeenHit || this.isSliding) return;
+
+    if (this.getBounds().top > this.scene.scale.height) {
+      this.gameOver();
+    }
 
     const qKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     const eKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.E);

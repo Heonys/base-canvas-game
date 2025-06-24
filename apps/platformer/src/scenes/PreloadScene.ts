@@ -4,9 +4,13 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.tilemapTiledJSON("map", "/tilemap/customMap.tmj");
+    this.load.tilemapTiledJSON("level-1", "/tilemap/customMap.tmj");
+    this.load.tilemapTiledJSON("level-2", "/tilemap/customMap2.tmj");
     this.load.image("tileset-1", "/images/main_lev_build_1.png");
     this.load.image("tileset-2", "/images/main_lev_build_2.png");
+
+    this.load.image("bg-dark", "/images/bg-dark.png");
+    this.load.image("bg-sky", "/images/background_0.png");
 
     this.load.image("diamond", "/images/collectibles/diamond.png");
     this.load.image("diamond-1", "/images/collectibles/diamond_big_01.png");
@@ -63,9 +67,14 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 32,
       spacing: 16,
     });
+
+    this.load.once("complete", () => {
+      this.startGame();
+    });
   }
 
-  create() {
+  startGame() {
+    this.registry.set("level", 1);
     this.scene.start("play");
   }
 }

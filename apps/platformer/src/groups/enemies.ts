@@ -3,9 +3,15 @@ import { Birdman, Enemy, Snaky } from "@/entities";
 type EnemyConstructor = new (scene: Phaser.Scene, x: number, y: number) => Enemy;
 
 export class Enemies extends Phaser.GameObjects.Group {
-  constructor(scene: Phaser.Scene) {
+  constructor(
+    scene: Phaser.Scene,
+    public restart?: boolean,
+  ) {
     super(scene);
-    this.createAnimation();
+
+    if (!restart) {
+      this.createAnimation();
+    }
   }
 
   get enemyClassMap(): Record<string, EnemyConstructor> {

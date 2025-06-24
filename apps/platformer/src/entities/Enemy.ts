@@ -27,6 +27,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     x: number,
     y: number,
     key: string,
+    public restart?: boolean,
   ) {
     super(scene, x, y, key);
 
